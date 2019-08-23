@@ -10,7 +10,7 @@ import includes.settings as settings
 
 # start logging notifications
 data.removeJSONFile('notification.data')
-previousMessage = "Welcome to   Kevin's Car"
+previousMessage = "Welcome to Kevin's Car"
 firstRun = True
 
 def checkForMessage():
@@ -38,7 +38,7 @@ while True:
             message = checkForMessage()
             if (previousMessage != message):
                 saveMessageToFile(message)
-                previousMessage = message  
+                previousMessage = message
     except (Exception):
         # internet connectivity issue, just pass
         pass

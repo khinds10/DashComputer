@@ -8,8 +8,8 @@ import includes.data as data
 import info.CurrentReadings as CurrentReadings
 
 # set to use DHT11 sensor
-sensor = Adafruit_DHT.DHT11
-pin = 18
+sensor = Adafruit_DHT.DHT22
+pin = 22
 
 # start logging temp
 data.removeJSONFile('temp.data')

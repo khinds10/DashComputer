@@ -3,7 +3,7 @@
 # License: GPL 2.0
 
 # location to write JSON data files
-logFilesLocation = '/home/pi/TripComputer/computer/logs/'
+logFilesLocation = '/home/pi/DashComputer/computer/logs/'
 
 # forecast.io API key for local weather information
 weatherAPIURL = 'https://api.forecast.io/forecast/'
