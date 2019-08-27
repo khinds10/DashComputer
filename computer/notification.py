@@ -39,6 +39,7 @@ while True:
             if (previousMessage != message):
                 saveMessageToFile(message)
                 previousMessage = message
+
     except (Exception):
         # internet connectivity issue, just pass
         pass
