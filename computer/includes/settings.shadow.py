@@ -4,6 +4,7 @@
 
 # location to write JSON data files
 logFilesLocation = '/home/pi/DashComputer/computer/logs/'
+digoleDisplayDriverLocation = '/home/pi/DashComputer/computer/digole/'
 
 # forecast.io API key for local weather information
 weatherAPIURL = 'https://api.forecast.io/forecast/'

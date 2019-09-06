@@ -7,19 +7,26 @@ import pytz
 import time, json, string, cgi, subprocess, json
 import includes.data as data
 import includes.display as display
+import includes.settings as settings
+import info.CurrentReadings as CurrentReadings
+import info.WeatherDetails as WeatherDetails
+import info.GPSInfo as GPSInfo
+import info.CurrentReadings as CurrentReadings
+import info.LocaleDetails as LocaleDetails
+import info.Statistics as Statistics
 
-screen = "center"
-display.resetScreen()
+digoleDisplay = display.Display('left', settings.digoleDisplayDriverLocation)
+digoleDisplay.resetScreen()
 
 def showTime():
-    display.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), "        ")
+    display.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), 'currentTime')
+
+def getLocale():
+    localeInfo = LocaleDetails.LocaleDetails('address.data')
+    display.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, 'localeInfoCity')
 
 showTime()
-    
-
-#../digole/right-display setFont 18
-#../digole/right-display setColor 222
-#../digole/right-display printxy_abs 120 230 "Andover, MA, USA"
+getLocale()
 
 #../digole/right-display setFont 18
 #../digole/right-display setColor 255
@@ -44,5 +51,3 @@ showTime()
 #../digole/right-display setColor 254
 #../digole/right-display driving 175 43
 #../digole/right-display printxy_abs 200 55 "Idle: 2h 13m"
-
-
