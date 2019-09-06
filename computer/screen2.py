@@ -18,21 +18,21 @@ import info.Statistics as Statistics
 # setup the display and initial icons
 digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
-digoleDisplay.displayIcon(driving, 10, 12)
-digoleDisplay.displayIcon(speed, 10, 180)
+digoleDisplay.displayIcon('driving', 10, 12)
+digoleDisplay.displayIcon('speed', 10, 180)
 
 while True:
     
     # driving stats
     statisticsInfo = Statistics.Statistics('stats.data')
-    display.printByFontColorPosition(18, 255, 40, 25, 'Avg. ' + statisticsInfo.averageSpeeds[0] + ' mph', 'statisticsInfoAverageSpeeds')
-    display.printByFontColorPosition(18, 255, 10, 45, '[' + statisticsInfo.milesTravelled[0] + ' miles]', 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 255, 40, 25, 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph', 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 255, 10, 45, '[' + str(statisticsInfo.milesTravelled[0]) + ' miles]', 'statisticsInfoAverageSpeeds')
     
     # driving info
     gpsInfo = GPSInfo.GPSInfo('gps.data')    
-    display.printByFontColorPosition(18, 255, 10, 85, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', 'gpsInfoAltitude')
-    display.printByFontColorPosition(18, 255, 10, 105, 'Climb ' + gpsInfo.climb + '', 'gpsInfoClimb')
-    display.printByFontColorPosition(18, 255, 40, 195, str(int(gpsInfo.speed)) + ' mph', 'gpsInfoClimb')
+    digoleDisplay.printByFontColorPosition(18, 255, 10, 85, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', 'gpsInfoAltitude')
+    digoleDisplay.printByFontColorPosition(18, 255, 10, 105, 'Climb ' + str(int(gpsInfo.altitude)) + '', 'gpsInfoClimb')
+    digoleDisplay.printByFontColorPosition(18, 255, 40, 195, str(int(gpsInfo.speed)) + ' mph', 'gpsInfoClimb')
     
     time.sleep(1)
 

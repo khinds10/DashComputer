@@ -10,7 +10,7 @@ class Wifi:
     jsonFile = ''
     isConnected = 'no'
 
-    def __init__(self):
+    def __init__(self, jsonFile):
         self.isConnected = 'no'
         self.jsonFile = jsonFile
         self.getData()

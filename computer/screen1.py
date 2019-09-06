@@ -15,39 +15,100 @@ import info.CurrentReadings as CurrentReadings
 import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 
-digoleDisplay = display.Display('left', settings.digoleDisplayDriverLocation)
+# setup display and icons
+digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
+digoleDisplay.displayIcon('driving', 10, 10)
+digoleDisplay.displayIcon('driving', 175, 12)
+digoleDisplay.displayIcon('driving', 175, 43)
+digoleDisplay.displayIcon('speed', 10, 55)
+digoleDisplay.displayIcon('traffic', 10, 85)
+
+# start tracking notifications
+data.removeJSONFile('notification.data')
+previousMessage = "Welcome to Kevin's Car"
+firstRun = True
 
 def showTime():
-    display.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), 'currentTime')
+    digoleDisplay.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), 'currentTime')
 
 def getLocale():
     localeInfo = LocaleDetails.LocaleDetails('address.data')
-    display.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, 'localeInfoCity')
+    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, 'localeInfoCity')
 
-showTime()
-getLocale()
+def getTripStats():
+    statisticsInfo = Statistics.Statistics('stats.data')
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, 'Trip: ' + str(statisticsInfo.drivingTimes[0]), 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, str(statisticsInfo.inTrafficTimes[0]) + '%', 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: Xh Xm', 'statisticsInfoAverageSpeeds')    
 
-#../digole/right-display setFont 18
-#../digole/right-display setColor 255
-#../digole/right-display printxy_abs 20 140 "Welcome to Kevin's Car"
+def showMessage():
+    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, 'Welcome to Kevin\'s Car', 'statisticsInfoAverageSpeeds')
 
-#../digole/right-display setColor 255
-#../digole/right-display driving 10 10
-#../digole/right-display printxy_abs 35 25 "Trip: 1h 24m"
+# each 5 seconds check for new messages
+while True:
+    showTime()
+    getLocale()
+    getTripStats()
 
-#../digole/right-display setColor 255
-#../digole/right-display speed 10 55
-#../digole/right-display printxy_abs 35 65 "12mi"
+    #showMessage()
+    firstRun = False
+    time.sleep(5)
 
-#../digole/right-display setColor 255
-#../digole/right-display traffic 10 85
-#../digole/right-display printxy_abs 35 95 "13%"
+#def checkForMessage():
+#    """check for new messages"""
+#    incomingMessage = json.loads(unicode(subprocess.check_output(['curl', settings.dashboardServer + "/message"]), errors='ignore'))
+#    return str(incomingMessage["message"])
 
-#../digole/right-display setColor 222
-#../digole/right-display driving 175 12
-#../digole/right-display printxy_abs 200 25 "Last: 2h 13m"
+#def saveMessageToFile(message):
+#    """save new notification message to file for gauge to display"""
+#    notification = Notification.Notification()
+#    notification.message = message
+#    data.saveJSONObjToFile('notification.data', notification)
+#    
+## save the initial welcome message
+#saveMessageToFile(previousMessage)
 
-#../digole/right-display setColor 254
-#../digole/right-display driving 175 43
-#../digole/right-display printxy_abs 200 55 "Idle: 2h 13m"
+
+#while True:
+#    try:
+#        # if we're running the first time, no need to display an old message I already have read
+#        if (firstRun):
+#            previousMessage = checkForMessage()
+#        else:
+#            # if message has changed, then save the new one to the file
+#            message = checkForMessage()
+#            if (previousMessage != message):
+#                saveMessageToFile(message)
+#                previousMessage = message
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

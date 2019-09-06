@@ -17,7 +17,7 @@ class GPSInfo:
     mode = 0
     timeSet = False
 
-    def __init__(self):
+    def __init__(self, jsonFile):
         self.latitude = 0
         self.longitude = 0
         self.altitude = 0

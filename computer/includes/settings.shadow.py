@@ -10,6 +10,9 @@ digoleDisplayDriverLocation = '/home/pi/DashComputer/computer/digole/'
 weatherAPIURL = 'https://api.forecast.io/forecast/'
 weatherAPIKey = 'API KEY HERE'
 
+# google maps API key
+googleMapsAPIKey = 'GOOGLE MAPS KEY HERE'
+
 # if you have the device hub project running (https://github.com/khinds10/DeviceHub)
 devicesServer = 'http://my.server.com'
 

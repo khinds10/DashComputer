@@ -14,7 +14,7 @@ class Display:
     def __init__(self, screen, driverFileFolder):
         """set display screen to use and init object to use it"""
         self.digoleDisplayDrivers = { "center" : driverFileFolder + "center-display", "left" : driverFileFolder + "left-display", "right" : driverFileFolder + "right-display" }
-        self.screen = digoleDisplayDrivers[screen]
+        self.screen = self.digoleDisplayDrivers[screen]
     
     def resetScreen(self):
         """clear and rotate screen"""
@@ -29,9 +29,9 @@ class Display:
         """set font color for screen"""
         subprocess.call([self.screen, "setColor", str(fontColor)])
     
-    def displayIcon(icon, x, y):
+    def displayIcon(self, icon, x, y):
         """show icon from prepared icons built in to the driver itself (compiled from C)"""
-        subprocess.call([self.screen, icon, str(x), str(y)])
+        subprocess.call([self.screen, str(icon), str(x), str(y)])
         
     def printByFontColorPosition(self, fontSize, fontColor, x, y, text, cacheKey):
         """erase existing text and print at x,y"""

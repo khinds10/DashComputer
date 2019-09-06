@@ -10,7 +10,7 @@ class Notification:
     jsonFile = ''
     message = ''
 
-    def __init__(self):
+    def __init__(self, jsonFile):
         self.message = ''
         self.jsonFile = jsonFile
         self.getData()

@@ -4,7 +4,7 @@
         "7"
     ], 
     "averageSpeeds": [
-        "0", 
+        "20", 
         "0"
     ], 
     "drivingTimes": [
@@ -16,7 +16,7 @@
         "2h15m"
     ], 
     "milesTravelled": [
-        0, 
-        0
+        12, 
+        20
     ]
 }

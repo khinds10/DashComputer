@@ -23,7 +23,7 @@ class WeatherDetails:
     solidPrecip = False
     minute = 0
 
-    def __init__(self):
+    def __init__(self, jsonFile):
         self.time = 0
         self.summary = ''
         self.nextHour = ''

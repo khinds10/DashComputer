@@ -14,7 +14,7 @@ class Statistics:
     averageAltitude = [0,0,0,0]
     milesTravelled = [0,0,0,0]
 
-    def __init__(self):
+    def __init__(self, jsonFile):
         self.drivingTimes = ['','','','']
         self.inTrafficTimes = ['','','','']
         self.milesTravelled = [0,0,0,0]
