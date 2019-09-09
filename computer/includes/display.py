@@ -39,7 +39,7 @@ class Display:
         
         # print the previous text in black to then print the new text if a previous value detected
         if cacheKey in self.cachedValues:
-            
+        
             # if there's nothing new to print then just return
             if str(text) == str(self.cachedValues[cacheKey]):
                 return
