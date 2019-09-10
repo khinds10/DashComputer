@@ -6,5 +6,6 @@
     "mode": 0, 
     "speed": 11.864249999999998, 
     "timeSet": true, 
-    "track": 77.95
+    "track": 77.95,
+    "jsonFile": "last-location.data"
 }

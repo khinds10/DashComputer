@@ -20,15 +20,11 @@ class Notification:
         '''hydrate from specific json file specified in the object constructor'''
         readings = data.getJSONFromDataFile(self.jsonFile)        
         for attr, value in self.__dict__.iteritems():
-            if attr != 'jsonFile':
-                setattr(self, attr, readings[attr])
+            setattr(self, attr, readings[attr])
 
     def to_JSON(self):
-    
-        # @TODO have this not save the jsonFile param
-        
+        """stringify object to JSON"""
         return json.dumps(self, default=lambda o: o.__dict__,sort_keys=True, indent=4)
-        
         
     def saveData(self):
         """create or rewrite object to data file as JSON"""

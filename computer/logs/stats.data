@@ -18,5 +18,6 @@
     "milesTravelled": [
         12, 
         20
-    ]
+    ],
+    "jsonFile": "stats.data"
 }

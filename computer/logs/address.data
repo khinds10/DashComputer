@@ -4,5 +4,6 @@
     "city": "Stoddard, NH, USA", 
     "country": "United States", 
     "county": "New Hampshire, USA", 
-    "zipcode": "Cheshire County, NH, USA"
+    "zipcode": "Cheshire County, NH, USA",
+    "jsonFile": "address.data"
 }

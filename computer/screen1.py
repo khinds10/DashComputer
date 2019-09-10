@@ -25,10 +25,6 @@ digoleDisplay.displayIcon('driving', 175, 43)
 digoleDisplay.displayIcon('speed', 10, 55)
 digoleDisplay.displayIcon('traffic', 10, 85)
 
-# start tracking notifications
-previousMessage = "Welcome to Kevin's Car"
-firstRun = True
-
 def showTime():
     digoleDisplay.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), 'currentTime')
 
@@ -47,48 +43,54 @@ def getTripStats():
 def showMessage(message):
     digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), 'statisticsInfoAverageSpeeds')
 
-def checkForMessage():
+def getMessage():
     """check for new messages"""
     incomingMessage = json.loads(unicode(subprocess.check_output(['curl', settings.dashboardServer + "/message"]), errors='ignore'))
     return str(incomingMessage["message"])
 
-def saveMessageToFile(message):
-    """save new notification message to file for gauge to display"""
-    notification = Notification.Notification('notification.data')
-    notification.message = message
-    notification.saveData()
-    
+def refreshMessage():
+    pass
+
+# start tracking notifications
+previousMessage = "Welcome to Kevin's Car"
+showMessage(previousMessage)
+previousMessage = getMessage()
+
+#def saveMessageToFile(message):
+#    """save new notification message to file for gauge to display"""
+#    notification = Notification.Notification('notification.data')
+#    notification.message = message
+#    notification.saveData()
+
 # save the initial welcome message
-saveMessageToFile(previousMessage)
-    
+#showMessage(previousMessage)
+#saveMessageToFile(previousMessage)
+#previousMessage = checkForMessage()
+#message = checkForMessage()
+#if (previousMessage != message):
+#    saveMessageToFile(message)
+#    previousMessage = message
+#    showMessage(previousMessage)
+
+
+
+
+
 # each 5 seconds check for new messages
 iteration = 0
 while True:
 
+    # get routine display info each second
     showTime()
     getLocale()
     getTripStats()
-    exit()
-
-    # if we're running the first time, no need to display an old message I already have read
-    if (firstRun):
-        showMessage(previousMessage)
-        previousMessage = checkForMessage()
-    else:
-        # if message has changed, then save the new one to the file
-        message = checkForMessage()
-        if (previousMessage != message):
-            saveMessageToFile(message)
-            previousMessage = message
-            showMessage(previousMessage)
-        
-    firstRun = False
-    time.sleep(1)
+    
+    # if message has changed, then save the new one to the file
     iteration = iteration + 1
     if iteration > 5:
-        print checkForMessage()
         iteration = 0
-    firstRun = False
+    
+    time.sleep(1)
     
 
 

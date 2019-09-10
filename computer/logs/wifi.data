@@ -1,3 +1,4 @@
 {
-    "isConnected": "yes"
+    "isConnected": "yes",
+    "jsonFile": "wifi.data"
 }

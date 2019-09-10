@@ -6,5 +6,6 @@
     "mode": 0, 
     "speed": 45, 
     "timeSet": true, 
-    "track": 139.75
+    "track": 139.75,
+    "jsonFile": "gps.data"
 }

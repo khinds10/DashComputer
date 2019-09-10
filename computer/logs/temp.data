@@ -1,4 +1,5 @@
 {
     "hmidty": 42, 
-    "temp": 75
+    "temp": 75,
+    "jsonFile": "temp.data"
 }

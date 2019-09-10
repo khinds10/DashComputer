@@ -12,5 +12,6 @@
     "solidPrecip": false, 
     "summary": "Partly Cloudy", 
     "time": 1566508043, 
-    "windSpeed": 4.83
+    "windSpeed": 4.83,
+    "jsonFile": "weather.data"
 }
