@@ -2,7 +2,7 @@
 # Current Phone Notification
 # Kevin Hinds http://www.kevinhinds.com
 # License: GPL 2.0
-import json
+import time, json, string, cgi, subprocess, json
 import includes.data as data
 import includes.settings as settings
 
@@ -14,6 +14,8 @@ class Notification:
     def __init__(self, jsonFile):
         self.message = ''
         self.jsonFile = jsonFile
+        self.message = self.getMessage()
+        self.saveData()
         self.getData()
 
     def getData(self):
@@ -22,6 +24,22 @@ class Notification:
         for attr, value in self.__dict__.iteritems():
             setattr(self, attr, readings[attr])
 
+    def getMessage(self):
+        """get latest phone message that may have occurred"""
+        latestMessage = json.loads(unicode(subprocess.check_output(['curl', settings.dashboardServer + "/message"]), errors='ignore'))
+        latestMessage = str(latestMessage['message'])
+        return latestMessage    
+
+    def messageChanged(self):
+        """check for new notifications updating object, else False"""
+        latestMessage = self.getMessage()
+        if self.message != latestMessage:
+            self.message = latestMessage
+            self.saveData()
+            return True
+        else:
+            return False
+        
     def to_JSON(self):
         """stringify object to JSON"""
         return json.dumps(self, default=lambda o: o.__dict__,sort_keys=True, indent=4)

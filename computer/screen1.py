@@ -41,95 +41,34 @@ def getTripStats():
     digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: Xh Xm', 'statisticsInfoAverageSpeeds')    
 
 def showMessage(message):
-    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), 'statisticsInfoAverageSpeeds')
+    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), 'statisticsInfoAverageSpeeds5')
 
-def getMessage():
-    """check for new messages"""
-    incomingMessage = json.loads(unicode(subprocess.check_output(['curl', settings.dashboardServer + "/message"]), errors='ignore'))
-    return str(incomingMessage["message"])
-
-def refreshMessage():
-    pass
-
-# start tracking notifications
-previousMessage = "Welcome to Kevin's Car"
-showMessage(previousMessage)
-previousMessage = getMessage()
-
-#def saveMessageToFile(message):
-#    """save new notification message to file for gauge to display"""
-#    notification = Notification.Notification('notification.data')
-#    notification.message = message
-#    notification.saveData()
-
-# save the initial welcome message
-#showMessage(previousMessage)
-#saveMessageToFile(previousMessage)
-#previousMessage = checkForMessage()
-#message = checkForMessage()
-#if (previousMessage != message):
-#    saveMessageToFile(message)
-#    previousMessage = message
-#    showMessage(previousMessage)
-
-
-
-
-
-# each 5 seconds check for new messages
-iteration = 0
+# get routine display info each second
+notification = Notification.Notification('notification.data')
+messageCheckedWait = 0
+showMessageWait = 0
+messageToggled = False
 while True:
-
-    # get routine display info each second
+    
+    # show stats from JSON files
     showTime()
     getLocale()
     getTripStats()
     
-    # if message has changed, then save the new one to the file
-    iteration = iteration + 1
-    if iteration > 5:
-        iteration = 0
-    
+    # every 10 seconds see if the message has changed
+    messageCheckedWait = messageCheckedWait + 1
+    if messageCheckedWait > 10:
+        if notification.messageChanged():
+            showMessageWait = 10
+        messageCheckedWait = 0
+
+    # if message flagged as changed show it for 10 seconds toggling the first 60 chars    
+    if showMessageWait > 0:
+        messageToggled = not messageToggled
+        showMessageWait = showMessageWait - 1
+        if messageToggled:
+            showMessage(notification.message[0:30])
+        else:
+            showMessage(notification.message[30:60])
+
     time.sleep(1)
-    
-
-
-
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
