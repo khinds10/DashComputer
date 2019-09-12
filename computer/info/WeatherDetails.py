@@ -22,6 +22,7 @@ class WeatherDetails:
     precipStarting = False
     solidPrecip = False
     minute = 0
+    upcomingConditions = ''
 
     def __init__(self, jsonFile):
         self.time = 0
@@ -38,6 +39,7 @@ class WeatherDetails:
         self.precipStarting = False
         self.solidPrecip = False
         self.minute = 0
+        self.upcomingConditions = ''
         self.jsonFile = jsonFile
         self.getData()
 

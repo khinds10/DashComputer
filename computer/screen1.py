@@ -4,6 +4,7 @@
 # License: GPL 2.0
 import datetime as dt
 import pytz
+from inspect import currentframe, getframeinfo
 import time, json, string, cgi, subprocess, json
 import includes.data as data
 import includes.display as display
@@ -26,22 +27,23 @@ digoleDisplay.displayIcon('speed', 10, 55)
 digoleDisplay.displayIcon('traffic', 10, 85)
 
 def showTime():
-    digoleDisplay.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), 'currentTime')
+    digoleDisplay.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), getframeinfo(currentframe()))
 
 def getLocale():
     localeInfo = LocaleDetails.LocaleDetails('address.data')
-    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, 'localeInfoCity')
+    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, getframeinfo(currentframe()))
 
-def getTripStats():
+def getTripStats():    
     statisticsInfo = Statistics.Statistics('stats.data')
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, 'Trip: ' + str(statisticsInfo.drivingTimes[0]), 'statisticsInfoAverageSpeeds1')
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', 'statisticsInfoAverageSpeeds2')
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, str(statisticsInfo.inTrafficTimes[0]) + '%', 'statisticsInfoAverageSpeeds3')
-    digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), 'statisticsInfoAverageSpeeds4')
-    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: Xh Xm', 'statisticsInfoAverageSpeeds')    
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, 'Trip: ' + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, str(statisticsInfo.inTrafficTimes[0]) + '%', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
+    
+    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: Xh Xm', getframeinfo(currentframe()))
 
 def showMessage(message):
-    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), 'statisticsInfoAverageSpeeds5')
+    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), getframeinfo(currentframe()))
 
 # get routine display info each second
 notification = Notification.Notification('notification.data')
@@ -70,5 +72,7 @@ while True:
             showMessage(notification.message[0:30])
         else:
             showMessage(notification.message[30:60])
-
+    else:
+        showMessage('')
     time.sleep(1)
+

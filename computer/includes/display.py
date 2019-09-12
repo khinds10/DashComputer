@@ -28,13 +28,20 @@ class Display:
     def setColor(self, fontColor):
         """set font color for screen"""
         subprocess.call([self.screen, "setColor", str(fontColor)])
-    
+
+    def drawBox(self, x, y, z, w):
+        """set font color for screen"""
+        subprocess.call([self.screen, "drawBox", str(x), str(y), str(z), str(w)])
+
     def displayIcon(self, icon, x, y):
         """show icon from prepared icons built in to the driver itself (compiled from C)"""
         subprocess.call([self.screen, str(icon), str(x), str(y)])
         
-    def printByFontColorPosition(self, fontSize, fontColor, x, y, text, cacheKey):
+    def printByFontColorPosition(self, fontSize, fontColor, x, y, text, callFromLine):
         """erase existing text and print at x,y"""
+
+        # cachekey is based on the which script / line number called the print function
+        cacheKey = str(callFromLine.filename) + '-' + str(callFromLine.lineno)
         self.setFont(fontSize)
         
         # print the previous text in black to then print the new text if a previous value detected

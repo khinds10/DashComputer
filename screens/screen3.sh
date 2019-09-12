@@ -68,7 +68,7 @@
 # sleet 10 10
 # wind 10 10
 
-../digole/digole/right-display clear
+../digole/right-display clear
 ../digole/right-display setRot90
 ../digole/right-display setFont 18
 

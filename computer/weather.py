@@ -8,20 +8,19 @@ import includes.settings as settings
 import info.WeatherDetails as WeatherDetails
 
 # remove old file and start logging weather
-data.removeJSONFile('weather.data')
 while True:
     try:
-    
+
         # get current location from GPS
         currentLocationInfo = data.getLastKnownLatLong()
-                
+
         # get current forecast from location
         weatherInfo = json.loads(subprocess.check_output(['curl', 'https://api.forecast.io/forecast/' + settings.weatherAPIKey + '/' + str(currentLocationInfo['latitude']) + ',' + str(currentLocationInfo['longitude']) + '?lang=en']))
         hourlyConditions = weatherInfo['hourly']
         currentConditions = weatherInfo['currently']
-        
+
         # gather info in serializable object to store as JSON file
-        weatherDetails = WeatherDetails.WeatherDetails()
+        weatherDetails = WeatherDetails.WeatherDetails('weather.data')
         weatherDetails.time = int(currentConditions['time'])
         weatherDetails.summary = str(currentConditions['summary'])
         weatherDetails.nextHour = str(hourlyConditions['summary'])
@@ -31,6 +30,7 @@ while True:
         weatherDetails.precipIntensity = float(currentConditions['precipIntensity'])
         weatherDetails.precipProbability = float(currentConditions['precipProbability'])
         weatherDetails.windSpeed = float(currentConditions['windSpeed'])
+        weatherDetails.upcomingConditions = hourlyConditions["data"][0:10]
 
         # set to not precipitating by default
         weatherDetails.isPrecip = False
