@@ -15,9 +15,9 @@
         "3m", 
         "2h15m"
     ], 
+    "jsonFile": "stats.data", 
     "milesTravelled": [
         12, 
         20
-    ],
-    "jsonFile": "stats.data"
+    ]
 }

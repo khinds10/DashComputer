@@ -15,20 +15,16 @@ while True:
         localeInfo = json.loads(subprocess.check_output(['curl', localeURL]))
     
         # create serializeable class for use to save locale info to JSON file object
-        localeDetails = LocaleDetails.LocaleDetails()
+        localeDetails = LocaleDetails.LocaleDetails('address.data')
         localeDetails.address = str(localeInfo['results'][0]['formatted_address'])
         localeDetails.area = str(localeInfo['results'][1]['formatted_address'])
         localeDetails.city = str(localeInfo['results'][2]['formatted_address'])
         localeDetails.zipcode = str(localeInfo['results'][3]['formatted_address'])
         localeDetails.county = str(localeInfo['results'][4]['formatted_address'])
         localeDetails.country = str(localeInfo['results'][5]['formatted_address'])
+        localeDetails.saveData()
 
-        # create or rewrite data to locale data file as JSON
-        data.saveJSONObjToFile('address.data', localeDetails)
-        
     except (Exception):
         # GPS or network not available, wait 5 seconds
         time.sleep(5)
     time.sleep(60)
-
-    

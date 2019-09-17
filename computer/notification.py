@@ -9,7 +9,6 @@ import info.Notification as Notification
 import includes.settings as settings
 
 # start logging notifications
-data.removeJSONFile('notification.data')
 previousMessage = "Welcome to Kevin's Car"
 firstRun = True
 
@@ -20,9 +19,9 @@ def checkForMessage():
 
 def saveMessageToFile(message):
     """save new notification message to file for gauge to display"""
-    notification = Notification.Notification()
+    notification = Notification.Notification('notification.data')
     notification.message = message
-    data.saveJSONObjToFile('notification.data', notification)
+    notification.saveData()
     
 # save the initial welcome message
 saveMessageToFile(previousMessage)
@@ -41,8 +40,9 @@ while True:
                 previousMessage = message
 
     except (Exception):
-        # internet connectivity issue, just pass
-        pass
+        # internet connectivity issue, just wait
+        time.sleep(1)
+        
     firstRun = False
     time.sleep(5)
 

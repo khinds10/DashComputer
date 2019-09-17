@@ -4,6 +4,7 @@
 # License: GPL 2.0
 import json
 import includes.data as data
+import includes.settings as settings
 
 class LocaleDetails:
     '''Locale Information as class to persist as JSON information to file'''

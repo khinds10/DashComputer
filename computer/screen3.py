@@ -47,11 +47,11 @@ def showHourlyColorCodes(hourlyConditions):
     stepCount = 22
     currentStep = 10
     for hourlyMeasurement in hourlyConditions:
-        digoleDisplay.setColor('5')
+        digoleDisplay.setColor('146')
         if hourlyMeasurement["icon"] == "clear-day":
-            digoleDisplay.setColor('42')
+            digoleDisplay.setColor('146')
         if hourlyMeasurement["icon"] == "clear-night":
-            digoleDisplay.setColor('42')
+            digoleDisplay.setColor('146')
         if hourlyMeasurement["icon"] == "rain":
             digoleDisplay.setColor('7')
         if hourlyMeasurement["icon"] == "sleet":
@@ -60,8 +60,7 @@ def showHourlyColorCodes(hourlyConditions):
             digoleDisplay.setColor('7')        
         digoleDisplay.drawBox(str(currentStep), "210", "20", "20")
         currentStep = currentStep + stepCount
-    
-    
+
 while True:
     getCurrentWeather()
     getCabinConditions()

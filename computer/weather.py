@@ -63,7 +63,7 @@ while True:
             weatherDetails.solidPrecip = True
 
         # create or rewrite data to weather data file as JSON, then wait 5 minutes
-        data.saveJSONObjToFile('weather.data', weatherDetails)
+        weatherDetails.saveData();
         time.sleep(300)
         
     except (Exception):

@@ -4,6 +4,7 @@
 # License: GPL 2.0
 import json
 import includes.data as data
+import includes.settings as settings
 
 class CurrentReadings:
     '''Current Humidity and Tempurature Readings from DHT22 Sensor'''
@@ -12,8 +13,8 @@ class CurrentReadings:
     hmidty = 0
 
     def __init__(self, jsonFile):
-        self.temp = 0
-        self.hmidty = 0
+        self.temp = "0"
+        self.hmidty = "0"
         self.jsonFile = jsonFile
         self.getData()
 

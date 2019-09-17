@@ -15,25 +15,21 @@ import info.LocaleDetails as LocaleDetails
 while True:
     try:
         locationInfo = data.getJSONFromDataFile('gps.data')
-        print locationInfo
         if locationInfo == "":
             locationInfo = GPSInfo.GPSInfo()
             locationInfo = json.loads(locationInfo.to_JSON())
         
         localeInfo = data.getJSONFromDataFile('address.data')
-        print localeInfo
         if localeInfo == "":
             localeInfo = LocaleDetails.LocaleDetails()
             localeInfo = json.loads(localeInfo.to_JSON())
         
         tempInfo = data.getJSONFromDataFile('temp.data')
-        print tempInfo
         if tempInfo == "":
             tempInfo = CurrentReadings.CurrentReadings()
             tempInfo = json.loads(tempInfo.to_JSON())
         
         weatherInfo = data.getJSONFromDataFile('weather.data')
-        print weatherInfo
         if weatherInfo == "":
             weatherInfo = WeatherDetails.WeatherDetails()
             weatherInfo = json.loads(weatherInfo.to_JSON())

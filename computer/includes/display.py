@@ -30,8 +30,16 @@ class Display:
         subprocess.call([self.screen, "setColor", str(fontColor)])
 
     def drawBox(self, x, y, z, w):
-        """set font color for screen"""
+        """draw box on the screen"""
         subprocess.call([self.screen, "drawBox", str(x), str(y), str(z), str(w)])
+
+    def drawLine(self, x, y, z, w):
+        """draw line on the screen"""
+        subprocess.call([self.screen, "drawLine", str(x), str(y), str(z), str(w)])
+
+    def drawCircle(self, x, y, r, f):
+        """draw circle on the screen"""
+        subprocess.call([self.screen, "drawCircle", str(x), str(y), str(r), str(f)])
 
     def displayIcon(self, icon, x, y):
         """show icon from prepared icons built in to the driver itself (compiled from C)"""
