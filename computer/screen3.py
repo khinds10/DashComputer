@@ -27,7 +27,6 @@ def getCurrentWeather():
     global currentIcon
     weatherDetails = WeatherDetails.WeatherDetails('weather.data')
     if currentIcon != str(weatherDetails.icon):
-        print weatherDetails.icon
         digoleDisplay.displayIcon(str(weatherDetails.icon), 10, 10)
         currentIcon = str(weatherDetails.icon)    
     digoleDisplay.printByFontColorPosition(18, 255, 10, 100, weatherDetails.summary[0:30], getframeinfo(currentframe()))

@@ -47,6 +47,7 @@
 #include "traffic.h"
 #include "wifi.h"
 #include "wind.h"
+#include "flag.h"
 
 #define _TEXT_ 0
 #define _GRAPH_ 1
@@ -591,6 +592,8 @@ int main (int argc, char* argv[]) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &sleet,0);
     } else if (strcmp(digoleCommand, "wind") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &wind,0);
+    } else if (strcmp(digoleCommand, "flag") == 0) {
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &flag,0);
     }
     
     printf("\n");

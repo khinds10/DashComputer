@@ -1,11 +1,18 @@
+#!/usr/bin/python
+# Read in the the Sixfab GPS module
+# Kevin Hinds http://www.kevinhinds.com
+# License: GPL 2.0
 from time import sleep
-import serial
+import serial, time
+import info.GPSInfo as GPSInfo
  
 portwrite = "/dev/ttyUSB2"
 port = "/dev/ttyUSB1"
+gpsInfo = GPSInfo.GPSInfo('gps.data')
  
 def parseGPS(data):
-    print "raw:", data #prints raw data
+    global gpsInfo
+    print "raw:", data
     if data[0:6] == "$GPRMC":
         sdata = data.split(",")
         if sdata[2] == 'V':
@@ -20,18 +27,37 @@ def parseGPS(data):
         speed = sdata[7]       #Speed in knots
         trCourse = sdata[8]    #True course
         date = sdata[9][0:2] + "/" + sdata[9][2:4] + "/" + sdata[9][4:6]
-                           #date
         variation = sdata[10]  #variation
         degreeChecksum = sdata[11]
         dc = degreeChecksum.split("*")
         degree = dc[0]        #degree
         checksum = dc[1]      #checksum
         print "time : %s, latitude : %s(%s), longitude : %s(%s), speed : %s, True Course : %s, Date : %s, Magnetic Variation : %s(%s),Checksum : %s "%    (time,lat,dirLat,lon,dirLon,speed,trCourse,date,variation,degree,checksum)
+
+        gpsInfo.latitude = lat
+        gpsInfo.longitude = lon
+        #gpsInfo.altitude
+        gpsInfo.speed = str(int(speed * 1.151))
+        #gpsInfo.climb
+        gpsInfo.track = trCourse
+        gpsInfo.timeSet = True
+        
+        # {
+        #    "altitude": 193.5672, 
+        #    "climb": 0.6561600000000001, 
+        #    "latitude": 43.12345690, 
+        #    "longitude": -71.1234579, 
+        #    "mode": 0, 
+        #    "speed": 45, 
+        #    "timeSet": true, 
+        #    "track": 60,
+        #    "jsonFile": "gps.data"
+        # }
     else:
         print "Printed data is ",data[0:6]
 
 def decode(coord):
-    #Converts DDDMM.MMMMM -> DD deg MM.MMMMM min
+    """Converts DDDMM.MMMMM -> DD deg MM.MMMMM min"""
     x = coord.split(".")
     head = x[0]
     tail = x[1]
@@ -50,3 +76,4 @@ ser = serial.Serial(port, baudrate = 115200, timeout = 0.5)
 while True:
    data = ser.readline()
    parseGPS(data)
+   time.sleep(1)
