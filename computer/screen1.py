@@ -18,13 +18,15 @@ import info.Statistics as Statistics
 import info.Notification as Notification
 
 # setup display and icons
-digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
 digoleDisplay.displayIcon('driving', 10, 10)
 digoleDisplay.displayIcon('driving', 175, 12)
-digoleDisplay.displayIcon('driving', 175, 43)
+digoleDisplay.displayIcon('idleClock', 175, 43)
 digoleDisplay.displayIcon('speed', 10, 55)
 digoleDisplay.displayIcon('traffic', 10, 85)
+
+digoleDisplay.displayIcon('nissan', 230, 160)
 
 def showTime():
     digoleDisplay.printByFontColorPosition(120, 223, 10, 200, dt.datetime.now(pytz.timezone('US/Eastern')).strftime('%-I:%M %p'), getframeinfo(currentframe()))
@@ -37,10 +39,9 @@ def getTripStats():
     statisticsInfo = Statistics.Statistics('stats.data')
     digoleDisplay.printByFontColorPosition(18, 255, 35, 23, 'Trip: ' + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, str(statisticsInfo.inTrafficTimes[0]) + '%', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, data.calculateInTrafficPercent(str(statisticsInfo.inTrafficTimes[0]), str(statisticsInfo.drivingTimes[0])) + '%', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
-    
-    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: Xh Xm', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: XhXm', getframeinfo(currentframe()))
 
 def showMessage(message):
     digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), getframeinfo(currentframe()))
@@ -75,4 +76,3 @@ while True:
     else:
         showMessage('')
     time.sleep(1)
-

@@ -17,9 +17,9 @@ import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 
 # setup the display and initial icons
-digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
-digoleDisplay.displayIcon('driving', 10, 175)
+digoleDisplay.displayIcon('flag', 10, 175)
 
 currentIcon = ''
 def getCurrentWeather():
@@ -28,10 +28,11 @@ def getCurrentWeather():
     weatherDetails = WeatherDetails.WeatherDetails('weather.data')
     if currentIcon != str(weatherDetails.icon):
         digoleDisplay.displayIcon(str(weatherDetails.icon), 10, 10)
-        currentIcon = str(weatherDetails.icon)    
+        currentIcon = str(weatherDetails.icon)        
     digoleDisplay.printByFontColorPosition(18, 255, 10, 100, weatherDetails.summary[0:30], getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 20, 130, weatherDetails.nextHour[0:25], getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 25, 150, weatherDetails.nextHour[25:50] + '...', getframeinfo(currentframe()))
+    if len(weatherDetails.nextHour) > 25:
+        digoleDisplay.printByFontColorPosition(18, 255, 25, 150, weatherDetails.nextHour[25:50] + '...', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 223, 85, 30, str(int(weatherDetails.apparentTemperature)) + chr(176) + " / " + str(int(weatherDetails.humidity * 100)) + "%", getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 223, 35, 188, str(int(weatherDetails.windSpeed)) + ' mph', getframeinfo(currentframe()))
     showHourlyColorCodes(weatherDetails.upcomingConditions)
@@ -63,5 +64,4 @@ def showHourlyColorCodes(hourlyConditions):
 while True:
     getCurrentWeather()
     getCabinConditions()
-    time.sleep(1)
-
+    time.sleep(5)

@@ -48,6 +48,8 @@
 #include "wifi.h"
 #include "wind.h"
 #include "flag.h"
+#include "nissan.h"
+#include "idleClock.h"
 
 #define _TEXT_ 0
 #define _GRAPH_ 1
@@ -573,27 +575,31 @@ int main (int argc, char* argv[]) {
     } else if (strcmp(digoleCommand, "snowIcon") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &snowIcon,0);
     } else if (strcmp(digoleCommand, "snow") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &snow,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &snow,0);
     } else if (strcmp(digoleCommand, "rain") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &rain,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &rain,0);
     } else if (strcmp(digoleCommand, "clearDay") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &clearDay,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &clearDay,0);
     } else if (strcmp(digoleCommand, "clearNight") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &clearNight,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &clearNight,0);
     } else if (strcmp(digoleCommand, "cloudy") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &cloudy,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &cloudy,0);
     } else if (strcmp(digoleCommand, "fog") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &fog,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &fog,0);
     } else if (strcmp(digoleCommand, "partlyCloudyDay") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &partlyCloudyDay,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &partlyCloudyDay,0);
     } else if (strcmp(digoleCommand, "partlyCloudyNight") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &partlyCloudyNight,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &partlyCloudyNight,0);
     } else if (strcmp(digoleCommand, "sleet") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &sleet,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &sleet,0);
     } else if (strcmp(digoleCommand, "wind") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 20, 20, &wind,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &wind,0);
     } else if (strcmp(digoleCommand, "flag") == 0) {
-        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &flag,0);
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 15, 15, &flag,0);
+    } else if (strcmp(digoleCommand, "nissan") == 0) {
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 45, 31, &nissan,0);
+    } else if (strcmp(digoleCommand, "idleClock") == 0) {
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 15, 15, &idleClock,0);
     }
     
     printf("\n");

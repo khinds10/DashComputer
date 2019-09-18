@@ -19,7 +19,7 @@ import info.Statistics as Statistics
 import info.Wifi as Wifi
 
 # setup the display and initial icons
-digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
 digoleDisplay.displayIcon('driving', 10, 208)
 digoleDisplay.displayIcon('speed', 10, 180)
@@ -89,6 +89,6 @@ while True:
         digoleDisplay.displayIcon('wifi', 234, 10)
     else:
         digoleDisplay.setColor(0)
-        digoleDisplay.drawBox(230,10,20,20)
+        digoleDisplay.displayIcon('noWifi', 234, 10)
 
     time.sleep(2)

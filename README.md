@@ -206,6 +206,7 @@ Run the following queries:
 > id serial,
 > time timestamp without time zone NOT NULL,
 > new\_trip\_start timestamp without time zone NULL,
+> new\_idle\_start timestamp without time zone NULL,
 > gps\_latitude double precision	,
 > gps\_longitude double precision,
 > gps\_altitude real,

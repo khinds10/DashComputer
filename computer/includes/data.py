@@ -2,7 +2,7 @@
 # Data helper functions to save and show human readable info
 # Kevin Hinds http://www.kevinhinds.com
 # License: GPL 2.0
-import time, json, string, cgi, subprocess, os
+import time, json, string, cgi, subprocess, os, re
 import includes.settings as settings
 
 def convertHumanReadable(seconds):
@@ -91,6 +91,43 @@ def removeJSONFile(fileName):
         os.remove(settings.logFilesLocation + fileName)
     except (Exception):
         pass
+
+def calculateInTrafficPercent(inTrafficTimeAmount, drivingTimeAmount):
+    """for given in traffic time and total driving time get the percent time in traffic as int"""
+    inTrafficTotalMinutes = timeStringToMinutes(inTrafficTimeAmount)    
+    drivingTotalMinutes = timeStringToMinutes(drivingTimeAmount)
+    percent = int(percentage(inTrafficTotalMinutes, drivingTotalMinutes))
+    return str(percent)
+
+def percentage(part, whole):
+    """get percent as a float"""
+    try:
+        return 100 * float(part)/float(whole)
+    except:
+        return 0
+
+def timeStringToMinutes(timeString):
+    """break down the string such as "2h4m" to just minutes as integer"""
+    # extract minutes
+    try:
+        timeStringMinutes = re.findall("[0-9]+m", timeString)
+        if timeStringMinutes[0]:
+            timeStringMinutes[0] = re.sub("m",'',timeStringMinutes[0])
+            timeStringMinutes = int(timeStringMinutes[0])
+    except:
+        timeStringMinutes = 0
+
+    # extract hours
+    try:
+        timeStringHours = re.findall("[0-9]+h", timeString)
+        if timeStringHours[0]:
+            timeStringHours[0] = re.sub("h",'',timeStringHours[0])
+            timeStringHours = int(timeStringHours[0])
+    except:
+        timeStringHours = 0
+    
+    # get the total minutes and return    
+    return (int(timeStringHours) * 60) + int(timeStringMinutes)
 
 def getHeadingByDegrees(heading):
     """get compass rose value from heading in degrees"""
