@@ -6,11 +6,39 @@ import os, time, json
 import includes.data as data
 import includes.postgres as postgres
 import info.Statistics as Statistics
+import info.Idle as Idle
 
-# get the beginning of the trip
-thisTripStartID = postgres.getNewTripStartID()
+isIdle = False
 while True:
     try:
+    
+    
+
+
+
+    
+
+    
+    
+    
+    
+    #TODO!
+        
+    
+        idleStatus = Idle.Statistics('idle.data')
+        if idleStatus.isIdle == 'yes':
+            if isIdle == True:
+                thisTripStartID = postgres.getNewTripStartID()
+                isIdle = False
+        else:
+            if isIdle == False:
+                thisTripStartID = postgres.getNewTripStartID()
+                isIdle = True
+
+
+
+
+
 	    drivingStatistics = Statistics.Statistics('stats.data')
 	    drivingTimes = postgres.getDrivingTimes(thisTripStartID)
 	    avgSpeeds = postgres.getAverageSpeeds(thisTripStartID)

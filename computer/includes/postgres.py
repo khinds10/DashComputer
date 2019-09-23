@@ -14,6 +14,11 @@ def startNewTrip():
     dBCursor.execute("""INSERT INTO driving_stats (time, new_trip_start) VALUES (%s, %s)""", ("now()","now()",))
     postgresConn.commit()
 
+def startNewIdle():
+    """start new idle entry in the DB"""
+    dBCursor.execute("""INSERT INTO driving_stats (time, new_idle_start) VALUES (%s, %s)""", ("now()","now()",))
+    postgresConn.commit()
+
 def saveDrivingStats(locationInfo, localeInfo, tempInfo, weatherInfo):
     """save second worth of driving stats to the DB"""
     dBCursor.execute("""INSERT INTO driving_stats (time, gps_latitude, gps_longitude, gps_altitude, gps_speed, gps_climb, gps_track, locale_address, locale_area, locale_city, locale_county, locale_country, locale_zipcode, inside_temp, inside_hmidty, weather_time, weather_summary, weather_icon, weather_apparenttemperature, weather_humidity, weather_precipintensity, weather_precipprobability, weather_windspeed) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)""", ("now()", str(locationInfo["latitude"]), str(locationInfo["longitude"]), str(locationInfo["altitude"]), str(locationInfo["speed"]), str(locationInfo["climb"]), str(locationInfo["track"]), str(localeInfo["address"]), str(localeInfo["area"]), str(localeInfo["city"]), str(localeInfo["country"]), str(localeInfo["county"]), str(localeInfo["zipcode"]), str(tempInfo["temp"]), str(tempInfo["hmidty"]), "now()", str(weatherInfo["summary"]), str(weatherInfo["icon"]), str(weatherInfo["apparentTemperature"]), str(weatherInfo["humidity"]), str(weatherInfo["precipIntensity"]), str(weatherInfo["precipProbability"]), str(weatherInfo["windSpeed"])))
@@ -22,6 +27,10 @@ def saveDrivingStats(locationInfo, localeInfo, tempInfo, weatherInfo):
 def getNewTripStartID():
     """get the highest DB row indentifier where a new trip starts"""
     return getOneResult("SELECT max(id) FROM driving_stats WHERE new_trip_start IS NOT NULL")
+    
+def getNewIdleStartID():
+    """get the highest DB row indentifier where a new idle starts"""
+    return getOneResult("SELECT max(id) FROM driving_stats WHERE new_idle_start IS NOT NULL")
     
 def getResultsToUpload(fromTime):
     """get the results starting from datetime to upload to another database"""
