@@ -11,33 +11,46 @@ import info.Idle as Idle
 isIdle = False
 while True:
     try:
-    
-    
 
+        #        latestTripStartID = postgres.getLatestTripStartID()
+        #        latestIdleStartID = postgres.getLatestIdleStartID()
 
-
-    
-
-    
-    
-    
-    
-    #TODO!
-        
-    
-        idleStatus = Idle.Statistics('idle.data')
-        if idleStatus.isIdle == 'yes':
-            if isIdle == True:
-                thisTripStartID = postgres.getNewTripStartID()
-                isIdle = False
-        else:
-            if isIdle == False:
-                thisTripStartID = postgres.getNewTripStartID()
-                isIdle = True
-
-
-
-
+        #        idleStatus = Idle.Statistics('idle.data')
+        #        if idleStatus.isIdle == 'yes':
+        #            if isIdle == True:
+        #                latestTripStartID = postgres.getLatestTripStartID()
+        #                isIdle = False
+        #        else:
+        #            if isIdle == False:
+        #                latestIdleStartID = postgres.getLatestIdleStartID()
+        #                isIdle = True
+        #                
+        #        stats.data
+        #        
+        #            averageAltitude
+        #                current trip
+        #                last idle
+        #                last trip
+        #                
+        #            averageSpeeds
+        #                current trip
+        #                last idle
+        #                last trip
+        #                
+        #            drivingTimes
+        #                current trip
+        #                last idle
+        #                last trip
+        #                
+        #            inTrafficTimes
+        #                current trip
+        #                last idle
+        #                last trip
+        #                
+        #            milesTravelled
+        #                current trip
+        #                last idle
+        #                last trip
 
 	    drivingStatistics = Statistics.Statistics('stats.data')
 	    drivingTimes = postgres.getDrivingTimes(thisTripStartID)
@@ -48,7 +61,7 @@ while True:
 	    drivingStatistics.averageAltitude = map(data.convertToString, map(data.convertToInt, postgres.getAverageAlt(thisTripStartID)))
 	    drivingStatistics.milesTravelled = [data.convertToInt(avgSpeeds[0]/60/60 * drivingTimes[0]), data.convertToInt(avgSpeeds[1]/60/60 * drivingTimes[1])]    
 	    drivingStatistics.saveData()
-	    time.sleep(60)
+	    time.sleep(30)
 
     except (Exception):
     

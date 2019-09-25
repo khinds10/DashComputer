@@ -578,17 +578,17 @@ int main (int argc, char* argv[]) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &snow,0);
     } else if (strcmp(digoleCommand, "rain") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &rain,0);
-    } else if (strcmp(digoleCommand, "clearDay") == 0) {
+    } else if (strcmp(digoleCommand, "clear-day") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &clearDay,0);
-    } else if (strcmp(digoleCommand, "clearNight") == 0) {
+    } else if (strcmp(digoleCommand, "clear-night") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &clearNight,0);
     } else if (strcmp(digoleCommand, "cloudy") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &cloudy,0);
     } else if (strcmp(digoleCommand, "fog") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &fog,0);
-    } else if (strcmp(digoleCommand, "partlyCloudyDay") == 0) {
+    } else if (strcmp(digoleCommand, "partly-cloudy-day") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &partlyCloudyDay,0);
-    } else if (strcmp(digoleCommand, "partlyCloudyNight") == 0) {
+    } else if (strcmp(digoleCommand, "partly-cloudy-night") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &partlyCloudyNight,0);
     } else if (strcmp(digoleCommand, "sleet") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 64, 64, &sleet,0);

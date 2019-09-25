@@ -6,22 +6,18 @@ import json
 import includes.data as data
 import includes.settings as settings
 
-class Statistics:
-    """Overall Driving Statistics to save as class to persist as JSON information to file"""
+class RPi:
+    """Internal Raspberry PI environment values to save as class to persist as JSON information to file"""
     jsonFile = ''
-    drivingTimes = ['','','','']
-    inTrafficTimes = ['','','','']
-    averageSpeeds = [0,0,0,0]
-    averageAltitude = [0,0,0,0]
-    milesTravelled = [0,0,0,0]
+    cpuPercent = 0
+    memUsedPercent = 0
+    cpuTemperature = 0
 
     def __init__(self, jsonFile):
-        self.drivingTimes = ['','','','']
-        self.inTrafficTimes = ['','','','']
-        self.milesTravelled = [0,0,0,0]
-        self.averageSpeeds = [0,0,0,0]
-        self.averageAltitude = [0,0,0,0]
         self.jsonFile = jsonFile
+        self.cpuPercent = 0
+        self.memUsedPercent = 0
+        self.cpuTemperature = 0
         self.getData()
 
     def getData(self):
@@ -33,7 +29,7 @@ class Statistics:
     def to_JSON(self):
         """stringify object to JSON"""
         return json.dumps(self, default=lambda o: o.__dict__,sort_keys=True, indent=4)
-
+        
     def saveData(self):
         """create or rewrite object to data file as JSON"""
         f = file(settings.logFilesLocation + self.jsonFile, "w")

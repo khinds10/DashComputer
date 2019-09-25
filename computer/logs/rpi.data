@@ -1,0 +1,6 @@
+{
+    "cpuPercent": 0,
+    "memUsedPercent": 0,
+    "cpuTemperature": 0,
+    "jsonFile": "rpi.data"
+}

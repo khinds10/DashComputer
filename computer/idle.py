@@ -11,6 +11,11 @@ import info.Idle as Idle
 # pin 18/24 setup for high low detection from the relay (which shows the car power on)
 GPIO.setmode(GPIO.BCM)
 GPIO.setup(24, GPIO.IN, pull_up_down=GPIO.PUD_UP)
+
+# start idle tracker, we're just starting up so the car must be not idle / started
+idleStatus = Idle.Idle('idle.data')
+idleStatus.isIdle = "no"
+idleStatus.saveData()
 isIdle = False
 while True:
     input_state = GPIO.input(24) 
@@ -20,8 +25,12 @@ while True:
         if isIdle == True:
             postgres.startNewTrip()
             isIdle = False
+            idleStatus.isIdle = "no"
+            idleStatus.saveData()
     else:
         if isIdle == False:
             postgres.startNewIdle()   
             isIdle = True
+            idleStatus.isIdle = "yes"
+            idleStatus.saveData()
     time.sleep(0.2)
