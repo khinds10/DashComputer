@@ -10,14 +10,24 @@ class RPi:
     """Internal Raspberry PI environment values to save as class to persist as JSON information to file"""
     jsonFile = ''
     cpuPercent = 0
-    memUsedPercent = 0
-    cpuTemperature = 0
-
+    cpuTemperature = 0    
+    ramTotalMB = 0
+    ramFreeMB = 0
+    ramUsedMB = 0
+    diskTotalMB = 0
+    diskFreeMB = 0
+    diskFreePercent = 0
+        
     def __init__(self, jsonFile):
         self.jsonFile = jsonFile
         self.cpuPercent = 0
-        self.memUsedPercent = 0
-        self.cpuTemperature = 0
+        self.cpuTemperature = 0    
+        self.ramTotalMB = 0
+        self.ramFreeMB = 0
+        self.ramUsedMB = 0
+        self.diskTotalMB = 0
+        self.diskFreeMB = 0
+        self.diskFreePercent = 0
         self.getData()
 
     def getData(self):

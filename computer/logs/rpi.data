@@ -1,6 +1,11 @@
 {
-    "cpuPercent": 0,
-    "memUsedPercent": 0,
-    "cpuTemperature": 0,
-    "jsonFile": "rpi.data"
+    "cpuPercent": 0, 
+    "cpuTemperature": "44.5", 
+    "diskFreeMB": "2.1G", 
+    "diskFreePercent": "8", 
+    "diskTotalMB": "30G", 
+    "jsonFile": "rpi.data", 
+    "ramFreeMB": 726.0, 
+    "ramTotalMB": 948.0, 
+    "ramUsedMB": 61.0
 }
