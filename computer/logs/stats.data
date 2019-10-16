@@ -1,23 +1,28 @@
 {
     "averageAltitude": [
-        "150", 
-        "7"
+        "65", 
+        "49", 
+        "52"
     ], 
     "averageSpeeds": [
-        "20", 
-        "0"
+        "6", 
+        "2", 
+        "6"
     ], 
     "drivingTimes": [
-        "4m", 
-        "2h16m"
+        "6m", 
+        "2m", 
+        "16m"
     ], 
     "inTrafficTimes": [
-        "3m", 
-        "2h15m"
+        "6m", 
+        "2m", 
+        "15m"
     ], 
     "jsonFile": "stats.data", 
     "milesTravelled": [
-        12, 
-        20
+        "0", 
+        "0", 
+        "1"
     ]
 }

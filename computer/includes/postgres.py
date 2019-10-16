@@ -35,22 +35,86 @@ def getLatestIdleStartID():
 def getResultsToUpload(fromTime):
     """get the results starting from datetime to upload to another database"""
     return getAllResults("SELECT time, gps_latitude, gps_longitude, gps_speed, gps_altitude, locale_area, locale_city, inside_temp, weather_summary, weather_apparenttemperature, weather_windspeed FROM driving_stats WHERE time > '" + fromTime + "'") 
+
+def getRecentTripIds():
+    """get recent trips in car, the last 3 either driving or idle to summarize and display"""
+    return getAllResults("SELECT id, time, new_trip_start, new_idle_start FROM driving_stats WHERE (new_trip_start IS NOT NULL) OR (new_idle_start IS NOT NULL) ORDER BY id DESC LIMIT 3")
+
+######### Trip Times #########
+
+def getRecentTripTimes():
+    """get recent amount of time passed"""
+    tripInfo = getRecentTripIds()
+    return [getTimePassedByID(tripInfo[0][0]), getTimePassedByIDRange(tripInfo[1][0], tripInfo[0][0]), getTimePassedByIDRange(tripInfo[2][0], tripInfo[1][0])]
+
+def getTimePassedByID(tripStartId):
+    """get most recent trip time in progress"""
+    return getOneResult("SELECT count(id) FROM driving_stats WHERE id > " + str(tripStartId))
     
+def getTimePassedByIDRange(tripStartId, tripEndId):
+    """get most recent trip times by ranges"""
+    return getOneResult("SELECT count(id) FROM driving_stats WHERE id > " + str(tripStartId) + " AND id < " + str(tripEndId))
+
+######### Speeds #########
+
+def getRecentTripSpeeds():
+    """get recent average speeds"""
+    tripInfo = getRecentTripIds()
+    return [getSpeedsById(tripInfo[0][0]), getSpeedsByIdRange(tripInfo[1][0], tripInfo[0][0]), getSpeedsByIdRange(tripInfo[2][0], tripInfo[1][0])]
+
+def getSpeedsById(tripStartId):
+    """get recent trip average speeds"""
+    return getOneResult("SELECT AVG(gps_speed) FROM driving_stats WHERE id > " + str(tripStartId) + " AND gps_speed != 'NaN' AND gps_speed > -1")
+    
+def getSpeedsByIdRange(tripStartId, tripEndId):
+    """get average speeds by trip ranges"""
+    return getOneResult("SELECT AVG(gps_speed) FROM driving_stats WHERE id > " + str(tripStartId) + " AND id < " + str(tripEndId) + " AND gps_speed != 'NaN' AND gps_speed > -1")
+
+######### Traffic #########
+
+def getRecentTrafficTimes():
+    """get time in traffic"""
+    tripInfo = getRecentTripIds()
+    return [getInTrafficById(tripInfo[0][0]), getInTrafficByIdRange(tripInfo[1][0], tripInfo[0][0]), getInTrafficByIdRange(tripInfo[2][0], tripInfo[1][0])]
+
+def getInTrafficById(tripStartId):
+    """get recent trip time in traffic"""
+    return getOneResult("SELECT count(id) FROM driving_stats WHERE gps_speed < 20 AND gps_speed != 'NaN' AND gps_speed > -1 AND id > " + str(tripStartId))
+    
+def getInTrafficByIdRange(tripStartId, tripEndId):
+    """get time in traffic by range"""
+    return getOneResult("SELECT count(id) FROM driving_stats WHERE gps_speed < 20 AND gps_speed != 'NaN' AND gps_speed > -1 AND id > " + str(tripStartId) + " AND id < " + str(tripEndId))
+
+######### Altitude #########
+
+def getRecentTripAltitudes():
+    """get average altitudes"""
+    tripInfo = getRecentTripIds()
+    return [getAltitudesById(tripInfo[0][0]), getAltitudesByIdRange(tripInfo[1][0], tripInfo[0][0]), getAltitudesByIdRange(tripInfo[2][0], tripInfo[1][0])]
+
+def getAltitudesById(tripStartId):
+    """get recent trip average altitude"""
+    return getOneResult("SELECT AVG(gps_altitude) FROM driving_stats WHERE id > " + str(tripStartId) + " AND gps_altitude != 'NaN' AND gps_altitude > -1")
+    
+def getAltitudesByIdRange(tripStartId, tripEndId):
+    """get average altitudes trip ranges"""
+    return getOneResult("SELECT AVG(gps_altitude) FROM driving_stats WHERE id > " + str(tripStartId) + " AND id < " + str(tripEndId) + " AND gps_altitude != 'NaN' AND gps_altitude > -1")
+
 def getDrivingTimes(tripStartId):
     """get the driving times for current trip, day, week and month"""
     return [getOneResult("SELECT count(id) FROM driving_stats WHERE id > " + str(tripStartId)), getDrivingTimeByInterval("count(id)", "1 day")]
 
 def getInTrafficTimes(tripStartId):
     """get the driving times for current trip, day, week and month, gps_speed = 'NaN' or -1 means that GPS is not currently found"""
-    return [getOneResult("SELECT count(id) FROM driving_stats WHERE gps_speed < 2 AND gps_speed != 'NaN' AND gps_speed > -1 AND id > " + str(tripStartId)), getTrafficTimeByInterval("count(id)", "1 day")]
+    return [getOneResult("SELECT count(id) FROM driving_stats WHERE gps_speed < 20 AND gps_speed != 'NaN' AND gps_speed > -1 AND id > " + str(tripStartId)), getTrafficTimeByInterval("count(id)", "1 day")]
 
 def getTrafficTimeByInterval(value, interval):
     """for given column and date interval retrieve the calculated value, gps_speed = 'NaN' or -1 means that GPS is not currently found"""
     if (interval == '1 day'):
         morningTime = datetime.now().strftime('%Y-%m-%d 07:00:00')        
-        result = getOneResult("SELECT " + str(value) + " FROM driving_stats WHERE gps_speed < 2 AND gps_speed != 'NaN' AND gps_speed > -1 AND time >= '" + morningTime + "'") 
+        result = getOneResult("SELECT " + str(value) + " FROM driving_stats WHERE gps_speed < 20 AND gps_speed != 'NaN' AND gps_speed > -1 AND time >= '" + morningTime + "'") 
     else:
-        result = getOneResult("SELECT " + str(value) + " FROM driving_stats WHERE gps_speed < 2 AND gps_speed != 'NaN' AND gps_speed > -1 AND time >= (now() - interval '" + str(interval) + "')")
+        result = getOneResult("SELECT " + str(value) + " FROM driving_stats WHERE gps_speed < 20 AND gps_speed != 'NaN' AND gps_speed > -1 AND time >= (now() - interval '" + str(interval) + "')")
     return result
 
 def getAverageSpeeds(tripStartId):
