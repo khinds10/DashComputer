@@ -18,7 +18,7 @@ import info.Statistics as Statistics
 import info.Notification as Notification
 
 # setup display and icons
-digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('left', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
 digoleDisplay.displayIcon('driving', 10, 10)
 digoleDisplay.displayIcon('driving', 175, 12)

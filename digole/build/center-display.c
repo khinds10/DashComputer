@@ -72,7 +72,7 @@ const unsigned char fonts[] = {6, 10, 18, 51, 120, 123};
 char *fileName = "/dev/i2c-1";
 
 // address of I2C device Digole
-int  address = 0x29;
+int  address = 0x27;
 
 void delay (unsigned int howLong){
   struct timespec sleeper, dummy ;

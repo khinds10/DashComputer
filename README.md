@@ -242,6 +242,23 @@ Add the following lines
 
 `@reboot /bin/sleep 20; nohup python /home/pi/DashComputer/computer/temperature.py > /home/pi/CarComputer/computer/temperature.log 2>&1`
 
+
+### IN PROGRESS NOTES
+
+Change i2c address of 2 of the screens, they're default 0x27
+    we'll take 2 of the other displays and change the addresses to decimal 28 and 29 resulting in 
+
+Unplug all the displays plug only one in and run the command to change it's address
+
+./center-display changeI2CAddress 28
+
+Unplug them all again except for one different one and run the command
+
+./center-display changeI2CAddress 29
+
+Now we'll have 3 screens with different addresses 0x1b, 0x1d and 0x27
+
+
 ### Finished and powered on!
 
 ### Mounting inside your vehicle

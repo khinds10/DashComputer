@@ -19,7 +19,7 @@ import info.Statistics as Statistics
 import info.Wifi as Wifi
 
 # setup the display and initial icons
-digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('central', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
 digoleDisplay.displayIcon('driving', 10, 208)
 digoleDisplay.displayIcon('speed', 10, 180)
