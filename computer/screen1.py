@@ -16,6 +16,7 @@ import info.CurrentReadings as CurrentReadings
 import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 import info.Notification as Notification
+import info.RPi as RPi
 
 # setup display and icons
 digoleDisplay = display.Display('left', settings.digoleDisplayDriverLocation)
@@ -43,6 +44,13 @@ def getTripStats():
     digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: XhXm', getframeinfo(currentframe()))
 
+def getRPIStats():
+    RPiInfo = RPi.RPi('rpi.data')
+    digoleDisplay.printByFontColorPosition(10, 255, 180, 115, "Raspberry PI", getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(10, 255, 200, 130, str(RPiInfo.cpuTemperature) + chr(176) + 'f', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(10, 255, 235, 130,  '/ ' + str(RPiInfo.diskUsedPercent) + "% disk", getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(10, 255, 205, 145,  'RAM: ' + str(int(float(RPiInfo.ramUsedMB) / float(RPiInfo.ramTotalMB) * 100)) + "% used", getframeinfo(currentframe()))
+    
 def showMessage(message):
     digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), getframeinfo(currentframe()))
 
@@ -57,6 +65,7 @@ while True:
     showTime()
     getLocale()
     getTripStats()
+    getRPIStats()
     
     # every 10 seconds see if the message has changed
     messageCheckedWait = messageCheckedWait + 1

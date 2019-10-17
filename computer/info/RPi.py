@@ -16,7 +16,7 @@ class RPi:
     ramUsedMB = 0
     diskTotalMB = 0
     diskFreeMB = 0
-    diskFreePercent = 0
+    diskUsedPercent = 0
         
     def __init__(self, jsonFile):
         self.jsonFile = jsonFile
@@ -27,7 +27,7 @@ class RPi:
         self.ramUsedMB = 0
         self.diskTotalMB = 0
         self.diskFreeMB = 0
-        self.diskFreePercent = 0
+        self.diskUsedPercent = 0
         self.getData()
 
     def getData(self):

@@ -19,10 +19,10 @@ import info.Statistics as Statistics
 import info.Wifi as Wifi
 
 # setup the display and initial icons
-digoleDisplay = display.Display('central', settings.digoleDisplayDriverLocation)
+digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
-digoleDisplay.displayIcon('driving', 10, 208)
-digoleDisplay.displayIcon('speed', 10, 180)
+digoleDisplay.displayIcon('speed', 155, 72)
+digoleDisplay.displayIcon('driving', 155, 102)
 
 def setCompass(x,y, color):
     """ for x,y direction coordinates and color draw the compass with needle """
@@ -48,15 +48,15 @@ while True:
     
     # driving stats
     statisticsInfo = Statistics.Statistics('stats.data')
-    digoleDisplay.printByFontColorPosition(18, 255, 40, 220, 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 160, 220, '[' + str(statisticsInfo.milesTravelled[0]) + ' miles]', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 180, 115, 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 210, 140, '[' + str(statisticsInfo.milesTravelled[0]) + ' miles]', getframeinfo(currentframe()))
     
     # driving info
     gpsInfo = GPSInfo.GPSInfo('gps.data')
     digoleDisplay.setColor(255)  
-    digoleDisplay.printByFontColorPosition(18, 255, 160, 85, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 160, 115, 'Climb ' + str(int(gpsInfo.altitude)) + '', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 40, 195, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 10, 220, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 10, 195, 'Climb ' + str(int(gpsInfo.altitude)) + '', getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 180, 85, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
 
     # update compass
     if (int(gpsInfo.speed) > 5):
