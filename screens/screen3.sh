@@ -68,21 +68,19 @@
 # sleet 10 10
 # wind 10 10
 
-../digole/right-display clear
-../digole/right-display setRot90
-../digole/right-display setFont 18
+../digole/left-display clear
+../digole/left-display setRot90
+../digole/left-display setFont 18
 
-../digole/right-display setColor 255
-../digole/right-display partlyCloudyDay 10 10
-../digole/right-display printxy_abs 10 100 "85*F / 87%"
-../digole/right-display printxy_abs 10 120 "Possible drizzle starting..."
+../digole/left-display setColor 255
+../digole/left-display partlyCloudyDay 10 10
+../digole/left-display printxy_abs 10 100 "85*F / 87%"
+../digole/left-display printxy_abs 10 120 "Possible drizzle starting..."
 
-../digole/right-display driving 10 135
-../digole/right-display printxy_abs 35 148 "4mph"
+../digole/left-display driving 10 135
+../digole/left-display printxy_abs 35 148 "4mph"
 
-../digole/right-display wifi 254 10
+../digole/left-display wifi 254 10
 
-../digole/right-display printxy_abs 130 220 "Inside: 71*F / 63%"
-
-
+../digole/left-display printxy_abs 130 220 "Inside: 71*F / 63%"
 

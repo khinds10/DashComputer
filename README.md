@@ -91,7 +91,7 @@ Add the following lines to have your raspberrypi automatically connect to your h
 
 >$ `sudo apt-get update && sudo apt-get upgrade`
 >
->$ `sudo apt-get install build-essential git gpsd gpsd-clients i2c-tools libi2c-dev python3 python3-pip python-dev python-arrow python-gps python-imaging python-pip python-smbus rpi.gpio vim python-psutil sudo apt install`
+>$ `sudo apt-get install build-essential git gpsd gpsd-clients i2c-tools libi2c-dev python3 python3-pip python-dev python-arrow python-gps python-imaging python-pip python-smbus rpi.gpio vim python-psutil`
 >
 >$ `sudo pip install RPi.GPIO`
 >
@@ -153,7 +153,7 @@ Comment the line out
 
 Uncomment the line and change the pin number to 16
 
-> pin = 22
+> pin = 16
 
 Run the test
 

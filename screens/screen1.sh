@@ -68,6 +68,7 @@
 # sleet 10 10
 # wind 10 10
 
+
 ../digole/right-display clear
 ../digole/right-display setRot90
 

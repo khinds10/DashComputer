@@ -26,7 +26,6 @@ digoleDisplay.displayIcon('driving', 175, 12)
 digoleDisplay.displayIcon('idleClock', 175, 43)
 digoleDisplay.displayIcon('speed', 10, 55)
 digoleDisplay.displayIcon('traffic', 10, 85)
-
 digoleDisplay.displayIcon('nissan', 230, 160)
 
 def showTime():

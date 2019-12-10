@@ -86,9 +86,9 @@ while True:
     # get Wifi connected or not to toggle icon
     wifiConnectedInfo = Wifi.Wifi('wifi.data')    
     if wifiConnectedInfo.isConnected == 'yes':
-        digoleDisplay.displayIcon('wifi', 234, 10)
+        digoleDisplay.displayIcon('wifi', 254, 20)
     else:
         digoleDisplay.setColor(0)
-        digoleDisplay.displayIcon('noWifi', 234, 10)
+        digoleDisplay.displayIcon('noWifi', 254, 20)
 
     time.sleep(2)

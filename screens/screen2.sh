@@ -68,19 +68,19 @@
 # sleet 10 10
 # wind 10 10
 
-../digole/right-display clear
-../digole/right-display setRot90
-../digole/right-display setFont 18
+../digole/center-display clear
+../digole/center-display setRot90
+../digole/center-display setFont 18
 
-../digole/right-display setColor 255
-../digole/right-display driving 10 12
-../digole/right-display printxy_abs 40 25 "Avg. 10 mph"
-../digole/right-display printxy_abs 10 45 "[9 miles]"
+../digole/center-display setColor 255
+../digole/center-display driving 10 12
+../digole/center-display printxy_abs 40 25 "Avg. 10 mph"
+../digole/center-display printxy_abs 10 45 "[9 miles]"
 
-../digole/right-display driving 10 12
-../digole/right-display printxy_abs 10 85 "Alt. 193 ft"
-../digole/right-display printxy_abs 10 105 "Climb /"
+../digole/center-display driving 10 12
+../digole/center-display printxy_abs 10 85 "Alt. 193 ft"
+../digole/center-display printxy_abs 10 105 "Climb /"
 
-../digole/right-display speed 10 180
-../digole/right-display printxy_abs 40 195 "20 mph"
+../digole/center-display speed 10 180
+../digole/center-display printxy_abs 40 195 "20 mph"
 

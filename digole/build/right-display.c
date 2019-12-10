@@ -50,6 +50,7 @@
 #include "flag.h"
 #include "nissan.h"
 #include "idleClock.h"
+#include "beam.h"
 
 #define _TEXT_ 0
 #define _GRAPH_ 1
@@ -600,6 +601,8 @@ int main (int argc, char* argv[]) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 45, 31, &nissan,0);
     } else if (strcmp(digoleCommand, "idleClock") == 0) {
         drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 15, 15, &idleClock,0);
+    } else if (strcmp(digoleCommand, "beam") == 0) {
+        drawBitmap256((uint8_t)atoi(argv[2]), (uint8_t)atoi(argv[3]), 25, 16, &beam,0);
     }
     
     printf("\n");
