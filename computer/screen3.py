@@ -35,6 +35,10 @@ def getCurrentWeather():
         digoleDisplay.printByFontColorPosition(18, 255, 25, 150, weatherDetails.nextHour[25:50] + '...', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 223, 85, 30, str(int(weatherDetails.apparentTemperature)) + chr(176) + " / " + str(int(weatherDetails.humidity * 100)) + "%", getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 223, 35, 188, str(int(weatherDetails.windSpeed)) + ' mph', getframeinfo(currentframe()))
+    
+    # show daily high and low
+    digoleDisplay.printByFontColorPosition(18, 250, 110, 188, 'High: ' + str(int(weatherDetails.apparentTemperatureHigh)) + chr(176), getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 223, 220, 188, 'Low: ' + str(int(weatherDetails.apparentTemperatureLow)) + chr(176), getframeinfo(currentframe()))
     showHourlyColorCodes(weatherDetails.upcomingConditions)
 
 def getCabinConditions():

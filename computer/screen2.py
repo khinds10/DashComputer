@@ -16,6 +16,7 @@ import info.GPSInfo as GPSInfo
 import info.CurrentReadings as CurrentReadings
 import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
+import info.Notification as Notification
 import info.Wifi as Wifi
 
 # setup the display and initial icons
@@ -23,6 +24,11 @@ digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
 digoleDisplay.resetScreen()
 digoleDisplay.displayIcon('speed', 155, 72)
 digoleDisplay.displayIcon('driving', 155, 102)
+
+def showMessage(message):
+    print "showMessage()"
+    print message
+    digoleDisplay.printByFontColorPosition(18, 252, 20, 165, str(message), getframeinfo(currentframe()))
 
 def setCompass(x,y, color):
     """ for x,y direction coordinates and color draw the compass with needle """
@@ -43,8 +49,30 @@ southPY = 0
 northPX = 0
 northPY = 0
 
-# show screen and loop
+# show screen and loop each second
+notification = Notification.Notification('notification.data')
+messageCheckedWait = 0
+showMessageWait = 0
+messageToggled = False
 while True:
+    
+    # every 10 seconds see if the message has changed
+    messageCheckedWait = messageCheckedWait + 1
+    if messageCheckedWait > 10:
+        if notification.messageChanged():
+            showMessageWait = 10
+        messageCheckedWait = 0
+
+    # if message flagged as changed show it for 10 seconds toggling the first 60 chars    
+    if showMessageWait > 0:
+        messageToggled = not messageToggled
+        showMessageWait = showMessageWait - 1
+        if messageToggled:
+            showMessage(notification.message[0:30])
+        else:
+            showMessage(notification.message[30:60])
+    else:
+        showMessage('')
     
     # driving stats
     statisticsInfo = Statistics.Statistics('stats.data')
@@ -57,6 +85,9 @@ while True:
     digoleDisplay.printByFontColorPosition(18, 255, 10, 220, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 10, 195, 'Climb ' + str(int(gpsInfo.altitude)) + '', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 180, 85, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
+
+    # get weather details for headlights indicator
+    weatherDetails = WeatherDetails.WeatherDetails('weather.data')
 
     # update compass
     if (int(gpsInfo.speed) > 5):
@@ -86,9 +117,19 @@ while True:
     # get Wifi connected or not to toggle icon
     wifiConnectedInfo = Wifi.Wifi('wifi.data')    
     if wifiConnectedInfo.isConnected == 'yes':
-        digoleDisplay.displayIcon('wifi', 254, 20)
+        digoleDisplay.displayIcon('wifi', 234, 20)
     else:
         digoleDisplay.setColor(0)
-        digoleDisplay.displayIcon('noWifi', 254, 20)
-
+        digoleDisplay.drawBox(234, 20, 20, 20)
+        
+    if weatherDetails.useHeadlights:
+        digoleDisplay.displayIcon('beam', 230, 205)
+        digoleDisplay.setColor(11)
+        digoleDisplay.printByFontColorPosition(10, 11, 190, 190, 'Headlights', getframeinfo(currentframe()))
+    else:
+        digoleDisplay.setColor(0)
+        digoleDisplay.drawBox(230, 200, 24, 25)
+        digoleDisplay.printByFontColorPosition(10, 0, 190, 190, 'Headlights', getframeinfo(currentframe()))
+    
     time.sleep(2)
+

@@ -14,6 +14,8 @@ class WeatherDetails:
     nextHour = ''
     icon = ''
     apparentTemperature = 0
+    apparentTemperatureHigh = 0
+    apparentTemperatureLow = 0
     humidity = 0
     precipIntensity = 0
     precipProbability = 0
@@ -24,6 +26,9 @@ class WeatherDetails:
     solidPrecip = False
     minute = 0
     upcomingConditions = ''
+    sunriseTime = 0
+    sunsetTime = 0
+    useHeadlights = False
 
     def __init__(self, jsonFile):
         self.time = 0
@@ -40,7 +45,12 @@ class WeatherDetails:
         self.precipStarting = False
         self.solidPrecip = False
         self.minute = 0
-        self.upcomingConditions = ''
+        self.upcomingConditions = ''    
+        self.apparentTemperatureHigh = 0
+        self.apparentTemperatureLow = 0
+        self.sunriseTime = 0
+        self.sunsetTime = 0
+        self.useHeadlights = False
         self.jsonFile = jsonFile
         self.getData()
 

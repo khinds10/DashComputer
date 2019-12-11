@@ -39,7 +39,7 @@ class Notification:
             return True
         else:
             return False
-        
+
     def to_JSON(self):
         """stringify object to JSON"""
         return json.dumps(self, default=lambda o: o.__dict__,sort_keys=True, indent=4)

@@ -49,15 +49,8 @@ def getRPIStats():
     digoleDisplay.printByFontColorPosition(10, 255, 200, 130, str(RPiInfo.cpuTemperature) + chr(176) + 'f', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(10, 255, 235, 130,  '/ ' + str(RPiInfo.diskUsedPercent) + "% disk", getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(10, 255, 205, 145,  'RAM: ' + str(int(float(RPiInfo.ramUsedMB) / float(RPiInfo.ramTotalMB) * 100)) + "% used", getframeinfo(currentframe()))
-    
-def showMessage(message):
-    digoleDisplay.printByFontColorPosition(18, 255, 20, 140, str(message), getframeinfo(currentframe()))
 
 # get routine display info each second
-notification = Notification.Notification('notification.data')
-messageCheckedWait = 0
-showMessageWait = 0
-messageToggled = False
 while True:
     
     # show stats from JSON files
@@ -65,22 +58,5 @@ while True:
     getLocale()
     getTripStats()
     getRPIStats()
-    
-    # every 10 seconds see if the message has changed
-    messageCheckedWait = messageCheckedWait + 1
-    if messageCheckedWait > 10:
-        if notification.messageChanged():
-            showMessageWait = 10
-        messageCheckedWait = 0
 
-    # if message flagged as changed show it for 10 seconds toggling the first 60 chars    
-    if showMessageWait > 0:
-        messageToggled = not messageToggled
-        showMessageWait = showMessageWait - 1
-        if messageToggled:
-            showMessage(notification.message[0:30])
-        else:
-            showMessage(notification.message[30:60])
-    else:
-        showMessage('')
     time.sleep(1)

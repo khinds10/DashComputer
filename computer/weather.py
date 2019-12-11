@@ -17,8 +17,9 @@ while True:
         # get current forecast from location
         weatherInfo = json.loads(subprocess.check_output(['curl', 'https://api.forecast.io/forecast/' + settings.weatherAPIKey + '/' + str(currentLocationInfo['latitude']) + ',' + str(currentLocationInfo['longitude']) + '?lang=en']))
         hourlyConditions = weatherInfo['hourly']
-        currentConditions = weatherInfo['currently']
-
+        currentConditions = weatherInfo['currently']        
+        dailyConditions = weatherInfo['daily']
+        
         # gather info in serializable object to store as JSON file
         weatherDetails = WeatherDetails.WeatherDetails('weather.data')
         weatherDetails.time = int(currentConditions['time'])
@@ -26,17 +27,22 @@ while True:
         weatherDetails.nextHour = str(hourlyConditions['summary'])
         weatherDetails.icon = str(currentConditions['icon'])
         weatherDetails.apparentTemperature = float(currentConditions['apparentTemperature'])
+        weatherDetails.apparentTemperatureHigh = float(dailyConditions['data'][0]['apparentTemperatureHigh'])
+        weatherDetails.apparentTemperatureLow = float(dailyConditions['data'][0]['apparentTemperatureLow'])
         weatherDetails.humidity = float(currentConditions['humidity'])
         weatherDetails.precipIntensity = float(currentConditions['precipIntensity'])
         weatherDetails.precipProbability = float(currentConditions['precipProbability'])
         weatherDetails.windSpeed = float(currentConditions['windSpeed'])
         weatherDetails.upcomingConditions = hourlyConditions["data"][0:10]
+        weatherDetails.sunriseTime = int(dailyConditions['data'][1]['sunriseTime'])
+        weatherDetails.sunsetTime = int(dailyConditions['data'][0]['sunsetTime'])
 
         # set to not precipitating by default
         weatherDetails.isPrecip = False
         weatherDetails.precipStopping = False
         weatherDetails.precipStarting = False
         weatherDetails.solidPrecip = False
+        weatherDetails.useHeadlights = False
         weatherDetails.minute = 0
         
         # get if it's going to have precip or not        
@@ -61,6 +67,12 @@ while True:
         # if we've went through the whole hour, then it's solid precip
         if weatherDetails.isPrecip and (weatherDetails.minute > 59):
             weatherDetails.solidPrecip = True
+
+        # headlights reminder, if precip or it's after dark
+        if weatherDetails.isPrecip:
+            weatherDetails.useHeadlights = True
+        if weatherDetails.time > weatherDetails.sunsetTime and weatherDetails.time < weatherDetails.sunriseTime:
+            weatherDetails.useHeadlights = True
 
         # create or rewrite data to weather data file as JSON, then wait 5 minutes
         weatherDetails.saveData();
