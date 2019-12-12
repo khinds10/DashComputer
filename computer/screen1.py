@@ -17,6 +17,7 @@ import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 import info.Notification as Notification
 import info.RPi as RPi
+import info.Idle as Idle
 
 # setup display and icons
 digoleDisplay = display.Display('left', settings.digoleDisplayDriverLocation)
@@ -37,7 +38,13 @@ def getLocale():
 
 def getTripStats():    
     statisticsInfo = Statistics.Statistics('stats.data')
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, 'Trip: ' + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
+
+    # show driving / idle status for current trip you're in
+    idleInfo = Idle.Idle('idle.data')
+    drivingMessage = 'Trip: '
+    if idleInfo.isIdle == "yes":
+        drivingMessage = 'Idle: '
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, drivingMessage + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 35, 98, data.calculateInTrafficPercent(str(statisticsInfo.inTrafficTimes[0]), str(statisticsInfo.drivingTimes[0])) + '%', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))

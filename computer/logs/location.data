@@ -1,11 +1,11 @@
 {
-    "altitude": 216.20472000000004, 
-    "climb": -0.32808000000000004, 
-    "latitude": 43.12345697, 
-    "longitude": -72.12348965132, 
+    "altitude": 193.5672, 
+    "climb": 0.6561600000000001, 
+    "latitude": 46.7987, 
+    "longitude": -92.122, 
     "mode": 0, 
-    "speed": 11.864249999999998, 
+    "speed": 45, 
     "timeSet": true, 
-    "track": 77.95,
-    "jsonFile": "location.data"
+    "track": 60,
+    "jsonFile": "gps.data"
 }

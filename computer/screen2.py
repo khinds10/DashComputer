@@ -18,6 +18,7 @@ import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 import info.Notification as Notification
 import info.Wifi as Wifi
+import info.Idle as Idle
 
 # setup the display and initial icons
 digoleDisplay = display.Display('center', settings.digoleDisplayDriverLocation)
@@ -26,7 +27,6 @@ digoleDisplay.displayIcon('speed', 155, 72)
 digoleDisplay.displayIcon('driving', 155, 102)
 
 def showMessage(message):
-    print "showMessage()"
     print message
     digoleDisplay.printByFontColorPosition(18, 252, 20, 165, str(message), getframeinfo(currentframe()))
 
@@ -74,6 +74,9 @@ while True:
     else:
         showMessage('')
     
+    # get if driving or idle
+    idleInfo = Idle.Idle('idle.data')
+    
     # driving stats
     statisticsInfo = Statistics.Statistics('stats.data')
     digoleDisplay.printByFontColorPosition(18, 255, 180, 115, 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph', getframeinfo(currentframe()))
@@ -84,7 +87,10 @@ while True:
     digoleDisplay.setColor(255)  
     digoleDisplay.printByFontColorPosition(18, 255, 10, 220, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 255, 10, 195, 'Climb ' + str(int(gpsInfo.altitude)) + '', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 180, 85, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
+    if idleInfo.isIdle == "yes":
+        digoleDisplay.printByFontColorPosition(18, 255, 180, 85, 'Idle', getframeinfo(currentframe()))
+    else:
+        digoleDisplay.printByFontColorPosition(18, 255, 180, 85, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
 
     # get weather details for headlights indicator
     weatherDetails = WeatherDetails.WeatherDetails('weather.data')
@@ -132,4 +138,3 @@ while True:
         digoleDisplay.printByFontColorPosition(10, 0, 190, 190, 'Headlights', getframeinfo(currentframe()))
     
     time.sleep(2)
-

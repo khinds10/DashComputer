@@ -40,7 +40,8 @@ def getCurrentWeather():
     digoleDisplay.printByFontColorPosition(18, 250, 110, 188, 'High: ' + str(int(weatherDetails.apparentTemperatureHigh)) + chr(176), getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(18, 223, 220, 188, 'Low: ' + str(int(weatherDetails.apparentTemperatureLow)) + chr(176), getframeinfo(currentframe()))
     showHourlyColorCodes(weatherDetails.upcomingConditions)
-
+    showPrecipAlert(weatherDetails)
+    
 def getCabinConditions():
     """get current conditions inside the car/cabin"""
     currentReadings = CurrentReadings.CurrentReadings('temp.data')    
@@ -64,6 +65,27 @@ def showHourlyColorCodes(hourlyConditions):
             digoleDisplay.setColor('7')        
         digoleDisplay.drawBox(str(currentStep), "210", "20", "20")
         currentStep = currentStep + stepCount
+
+def showPrecipAlert(weatherDetails):
+    ''' show any alerts about upcoming rain/snow based on time temperature '''
+   
+    # show rain or snow based on temperature
+    precipType = 'rainIcon'
+    if int(weatherDetails.upcomingConditions[0]['temperature']) < 32:
+        precipType = 'snowIcon'
+    
+    # if alert present then show, solid precip, just say so
+    if weatherDetails.isPrecip:
+        if weatherDetails.solidPrecip:
+            digoleDisplay.displayIcon(precipType, 180, 85)
+        else:        
+            # show precip ending or starting and number of minutes
+            if weatherDetails.precipStarting:
+                digoleDisplay.printByFontColorPosition(18, 223, 210, 105, "in", getframeinfo(currentframe()))
+            else:
+                digoleDisplay.printByFontColorPosition(18, 223, 210, 105, "end", getframeinfo(currentframe()))
+            digoleDisplay.displayIcon(precipType, 180, 85)
+        digoleDisplay.printByFontColorPosition(18, 223, 250, 105, str(weatherDetails.minute) + ' min', getframeinfo(currentframe()))
 
 while True:
     getCurrentWeather()
