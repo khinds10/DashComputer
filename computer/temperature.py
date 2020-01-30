@@ -13,13 +13,16 @@ pin = 22
 
 # start logging temp
 while True:
-    humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
-    if humidity is not None and temperature is not None:
+    try:
+        humidity, temperature = Adafruit_DHT.read_retry(sensor, pin)
+        if humidity is not None and temperature is not None:
 
-        # convert to imperial units, save to JSON file and wait one second
-        temperature = 9.0/5.0 * temperature + 32
-        currentReadings = CurrentReadings.CurrentReadings('temp.data')
-        currentReadings.temp = str(int(temperature))
-        currentReadings.hmidty = str(int(humidity))
-        currentReadings.saveData()
+            # convert to imperial units, save to JSON file and wait one second
+            temperature = 9.0/5.0 * temperature + 32
+            currentReadings = CurrentReadings.CurrentReadings('temp.data')
+            currentReadings.temp = str(int(temperature))
+            currentReadings.hmidty = str(int(humidity))
+            currentReadings.saveData()
+    except (Exception):
+        pass
     time.sleep(1)

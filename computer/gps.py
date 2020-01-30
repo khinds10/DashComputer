@@ -1,79 +1,77 @@
-#!/usr/bin/python
-# Read in the the Sixfab GPS module
-# Kevin Hinds http://www.kevinhinds.com
+#! /usr/bin/python
+# Get GPS readings and save to file
+# Kevin Hinds http://www.kevinhinds.com / Dan Mandle http://dan.mandle.me
 # License: GPL 2.0
-from time import sleep
-import serial, time
+import os, time, threading, pprint, json, math, sys
+import includes.postgres as postgres
+from gps import *
+import includes.data as data
 import info.GPSInfo as GPSInfo
- 
-portwrite = "/dev/ttyUSB2"
-port = "/dev/ttyUSB1"
-gpsInfo = GPSInfo.GPSInfo('gps.data')
- 
-def parseGPS(data):
-    global gpsInfo
-    print "raw:", data
-    if data[0:6] == "$GPRMC":
-        sdata = data.split(",")
-        if sdata[2] == 'V':
-            print "no satellite data available"
-            return
-        print "-----Parsing GPRMC-----"
-        time = sdata[1][0:2] + ":" + sdata[1][2:4] + ":" + sdata[1][4:6]
-        lat = decode(sdata[3]) #latitude
-        dirLat = sdata[4]      #latitude direction N/S
-        lon = decode(sdata[5]) #longitute
-        dirLon = sdata[6]      #longitude direction E/W
-        speed = sdata[7]       #Speed in knots
-        trCourse = sdata[8]    #True course
-        date = sdata[9][0:2] + "/" + sdata[9][2:4] + "/" + sdata[9][4:6]
-        variation = sdata[10]  #variation
-        degreeChecksum = sdata[11]
-        dc = degreeChecksum.split("*")
-        degree = dc[0]        #degree
-        checksum = dc[1]      #checksum
-        print "time : %s, latitude : %s(%s), longitude : %s(%s), speed : %s, True Course : %s, Date : %s, Magnetic Variation : %s(%s),Checksum : %s "%    (time,lat,dirLat,lon,dirLon,speed,trCourse,date,variation,degree,checksum)
+pp = pprint.PrettyPrinter(indent=4)
 
-        gpsInfo.latitude = lat
-        gpsInfo.longitude = lon
-        #gpsInfo.altitude
-        gpsInfo.speed = str(int(speed * 1.151))
-        #gpsInfo.climb
-        gpsInfo.track = trCourse
-        gpsInfo.timeSet = True
-        
-        # {
-        #    "altitude": 193.5672, 
-        #    "climb": 0.6561600000000001, 
-        #    "latitude": 43.12345690, 
-        #    "longitude": -71.1234579, 
-        #    "mode": 0, 
-        #    "speed": 45, 
-        #    "timeSet": true, 
-        #    "track": 60,
-        #    "jsonFile": "gps.data"
-        # }
-    else:
-        print "Printed data is ",data[0:6]
+# setting the global variable
+gpsd = None 
 
-def decode(coord):
-    """Converts DDDMM.MMMMM -> DD deg MM.MMMMM min"""
-    x = coord.split(".")
-    head = x[0]
-    tail = x[1]
-    deg = head[0:-2]
-    min = head[-2:]
-    return deg + " deg " + min + "." + tail + " min"
- 
-print "Connecting port"
-serw = serial.Serial(portwrite, baudrate = 115200, timeout = 1)
-serw.write('AT+QGPS=1\r')
-serw.close()
-sleep(0.5)
- 
-print "Receiving GPS data"
-ser = serial.Serial(port, baudrate = 115200, timeout = 0.5)
-while True:
-   data = ser.readline()
-   parseGPS(data)
-   time.sleep(1)
+# start a new trip by inserting the new trip DB entry
+postgres.startNewTrip()
+data.removeJSONFile('location.data')
+
+class GpsPoller(threading.Thread):
+  '''create a threaded class for polling on the GPS sensor '''
+  
+  def __init__(self):
+    threading.Thread.__init__(self)
+    global gpsd
+    
+    # starting the stream of info
+    gpsd = gps(mode=WATCH_ENABLE)
+    self.current_value = None
+    self.running = True
+
+  def run(self):
+    '''this will continue to loop and grab EACH set of gpsd info to clear the buffer'''
+    global gpsd
+    while gpsp.running:
+      gpsd.next() 
+
+if __name__ == '__main__':
+
+    # create the thread & start it up
+    gpsp = GpsPoller()
+    try:
+        gpsp.start()
+        while True:
+            try:
+                # save JSON object of GPS info to file system
+                gpsInfo = GPSInfo.GPSInfo()
+                gpsInfo.latitude = float(gpsd.fix.latitude)
+                gpsInfo.longitude = float(gpsd.fix.longitude)
+                gpsInfo.track = float(gpsd.fix.track)
+
+                # convert to imperial units
+                gpsInfo.altitude = float(gpsd.fix.altitude * 3.2808)
+                gpsInfo.climb = float(gpsd.fix.climb * 3.2808)
+                
+                # correct for bad speed value on the device
+                #   also save to last location because it must be good with a valid speed present
+                gpsInfo.speed = float(gpsd.fix.speed)
+                if (gpsInfo.speed > 5):
+                    gpsInfo.speed = gpsInfo.speed * 2.25
+                    data.saveJSONObjToFile('last-location.data', gpsInfo)
+                
+                # create or rewrite data to GPS location data file as JSON
+                data.saveJSONObjToFile('location.data', gpsInfo)
+                
+                # set clock from GPS
+                if gpsd.utc != None and gpsd.utc != '':
+                    gpsutc = gpsd.utc[0:4] + gpsd.utc[5:7] + gpsd.utc[8:10] + ' ' + gpsd.utc[11:19]
+                    os.system('sudo date -u --set="%s"' % gpsutc)
+                time.sleep(1)
+            
+            except (Exception):
+                pass
+    except (KeyboardInterrupt, SystemExit):
+        print "\nKilling Thread..."
+        gpsp.running = False
+        gpsp.join()
+        print "Done.\nExiting."

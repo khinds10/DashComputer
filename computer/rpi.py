@@ -40,15 +40,18 @@ def getDiskSpace():
 # start logging Raspberry PI internal stats
 rpi = RPi.RPi('rpi.data')
 while True:
-    ramStats = getRAMinfo()
-    diskStats = getDiskSpace()    
-    rpi.cpuPercent = int(getCPUuse())
-    rpi.cpuTemperature = int(9.0/5.0 * float(getCPUtemperature()) + 32)
-    rpi.ramTotalMB = int(int(ramStats[0]) / 1000)
-    rpi.ramFreeMB = int(int(ramStats[2]) / 1000)
-    rpi.ramUsedMB = int(int(ramStats[1]) / 1000)
-    rpi.diskTotalMB = int(float(diskStats[0].strip('G')))
-    rpi.diskFreeMB = int(float(diskStats[1].strip('G')))
-    rpi.diskUsedPercent = int(diskStats[3].strip('%'))
-    rpi.saveData()
+    try:
+        ramStats = getRAMinfo()
+        diskStats = getDiskSpace()    
+        rpi.cpuPercent = int(getCPUuse())
+        rpi.cpuTemperature = int(9.0/5.0 * float(getCPUtemperature()) + 32)
+        rpi.ramTotalMB = int(int(ramStats[0]) / 1000)
+        rpi.ramFreeMB = int(int(ramStats[2]) / 1000)
+        rpi.ramUsedMB = int(int(ramStats[1]) / 1000)
+        rpi.diskTotalMB = int(float(diskStats[0].strip('G')))
+        rpi.diskFreeMB = int(float(diskStats[1].strip('G')))
+        rpi.diskUsedPercent = int(diskStats[3].strip('%'))
+        rpi.saveData()
+    except (Exception):
+        pass
     time.sleep(5)

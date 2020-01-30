@@ -18,19 +18,21 @@ idleStatus.isIdle = "no"
 idleStatus.saveData()
 isIdle = False
 while True:
-    input_state = GPIO.input(24) 
-    
-    # button pressed
-    if input_state == False: 
-        if isIdle == True:
-            postgres.startNewTrip()
-            isIdle = False
-            idleStatus.isIdle = "no"
-            idleStatus.saveData()
-    else:
-        if isIdle == False:
-            postgres.startNewIdle()   
-            isIdle = True
-            idleStatus.isIdle = "yes"
-            idleStatus.saveData()
-    time.sleep(0.2)
+    try:
+        # button pressed
+        input_state = GPIO.input(24) 
+        if input_state == False: 
+            if isIdle == True:
+                postgres.startNewTrip()
+                isIdle = False
+                idleStatus.isIdle = "no"
+                idleStatus.saveData()
+        else:
+            if isIdle == False:
+                postgres.startNewIdle()   
+                isIdle = True
+                idleStatus.isIdle = "yes"
+                idleStatus.saveData()
+        time.sleep(0.2)
+    except (Exception):
+        pass

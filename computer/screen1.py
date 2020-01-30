@@ -36,10 +36,9 @@ def getLocale():
     localeInfo = LocaleDetails.LocaleDetails('address.data')
     digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, getframeinfo(currentframe()))
 
-def getTripStats():    
+def getTripStats():
+    """show driving / idle status for current trip you're in"""
     statisticsInfo = Statistics.Statistics('stats.data')
-
-    # show driving / idle status for current trip you're in
     idleInfo = Idle.Idle('idle.data')
     drivingMessage = 'Trip: '
     if idleInfo.isIdle == "yes":
@@ -57,13 +56,13 @@ def getRPIStats():
     digoleDisplay.printByFontColorPosition(10, 255, 235, 130,  '/ ' + str(RPiInfo.diskUsedPercent) + "% disk", getframeinfo(currentframe()))
     digoleDisplay.printByFontColorPosition(10, 255, 205, 145,  'RAM: ' + str(int(float(RPiInfo.ramUsedMB) / float(RPiInfo.ramTotalMB) * 100)) + "% used", getframeinfo(currentframe()))
 
-# get routine display info each second
+# get routine display info each second - show stats from JSON files
 while True:
-    
-    # show stats from JSON files
-    showTime()
-    getLocale()
-    getTripStats()
-    getRPIStats()
-
+    try:
+        showTime()
+        getLocale()
+        getTripStats()
+        getRPIStats()
+    except (Exception):
+        pass
     time.sleep(1)

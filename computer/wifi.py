@@ -11,11 +11,14 @@ import info.Wifi as Wifi
 wifi = Wifi.Wifi('wifi.data')
 while True:
     try:
-        urllib2.urlopen('http://www.kevinhinds.net', timeout=1)
-        wifi.isConnected = 'yes'
-        isInternetConnected = True
-    except urllib2.URLError as err:
-        wifi.isConnected = 'no'
-        isInternetConnected = False
+        try:
+            urllib2.urlopen('http://www.kevinhinds.net', timeout=1)
+            wifi.isConnected = 'yes'
+            isInternetConnected = True
+        except urllib2.URLError as err:
+            wifi.isConnected = 'no'
+            isInternetConnected = False
+    except (Exception):
+        pass
     wifi.saveData()
     time.sleep(5)

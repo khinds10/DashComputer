@@ -88,6 +88,9 @@ def showPrecipAlert(weatherDetails):
         digoleDisplay.printByFontColorPosition(18, 223, 250, 105, str(weatherDetails.minute) + ' min', getframeinfo(currentframe()))
 
 while True:
-    getCurrentWeather()
-    getCabinConditions()
+    try:
+        getCurrentWeather()
+        getCabinConditions()
+    except (Exception):
+        pass
     time.sleep(5)
