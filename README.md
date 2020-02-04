@@ -91,7 +91,7 @@ Add the following lines to have your raspberrypi automatically connect to your h
 
 >$ `sudo apt-get update && sudo apt-get upgrade`
 >
->$ `sudo apt-get install build-essential git gpsd gpsd-clients i2c-tools libi2c-dev python3 python3-pip python-dev python-arrow python-gps python-imaging python-pip python-smbus rpi.gpio vim python-psutil`
+>$ `sudo apt-get install build-essential git gpsd gpsd-clients i2c-tools libi2c-dev python3 python3-pip python-arrow python-dev python-gps python-imaging python-pip python-psutil python-smbus rpi.gpio vim`
 >
 >$ `sudo pip install RPi.GPIO`
 >
@@ -129,7 +129,7 @@ Add the following lines to have your raspberrypi automatically connect to your h
 This is the wiring for the unit
 
 
-#### Connect the following Devices the pins on the  Pi Zero
+#### Connect the following Devices the pins on the Pi Zero
 
 ### Final Assembly
 
@@ -161,6 +161,61 @@ Run the test
 
 > You should see a metric reading of Temp and Humidity displayed on the command line.
 
+### Connect the USB Module to RPi HW UART
+
+Using HW UART for the GPS module requires the following to free the UART connection up on your Pi.
+
+"Cross"-Connect the TX and RX pins from the GPS module to the RPi TX (GPIO 14/8 pin) and RX (GPIO 15/10 pin) -- [TX goes to RX on the device and vice versa.]
+Connect RPi 5V to the VIN pin and the GPS module GND pin to an available RPi GND pin.
+
+#### Configure your Pi to use the GPS Module on UART
+
+sudo vi /boot/cmdline.txt
+change:
+`dwc_otg.lpm_enable=0 console=ttyAMA0,115200 kgdboc=ttyAMA0,115200 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait`
+to:
+`dwc_otg.lpm_enable=0 console=tty1 root=/dev/mmcblk0p2 rootfstype=ext4 elevator=deadline rootwait`
+(eg, remove console=ttyAMA0,115200 and if there, kgdboc=ttyAMA0,115200)
+
+Note you might see console=serial0,115200 or console=ttyS0,115200 and should remove those parts of the line if present.
+Run the following commands:
+`sudo systemctl stop serial-getty@ttyAMA0.service`
+`sudo systemctl disable serial-getty@ttyAMA0.service`
+
+#### GPS Module Install
+
+For testing force your USB device to connect to gpsd
+
+`sudo gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock`
+
+`sudo systemctl stop gpsd.socket`
+
+`sudo killall gpsd`
+
+`sudo dpkg-reconfigure gpsd`
+
+`sudo vi /etc/default/gpsd`
+
+> \# Default settings for gpsd.
+> START_DAEMON="true"
+> GPSD_OPTIONS="-n"
+> DEVICES="/dev/ttyAMA0"
+> USBAUTO="false"
+> GPSD_SOCKET="/var/run/gpsd.sock"
+
+Make sure the command is working
+
+`cgps -s`
+
+### Hack required to get GPSD working with UART connection on reboot
+
+`sudo su`
+
+`crontab -e`
+
+\# m h  dom mon dow   command
+@reboot /bin/sleep 5; killall gpsd
+@reboot /bin/sleep 10; /usr/sbin/gpsd /dev/ttyAMA0 -F /var/run/gpsd.sock
 
 #### Setup and Run the scripts
 
@@ -240,8 +295,7 @@ Run the following queries:
 
 Add the following lines 
 
-`@reboot /bin/sleep 20; nohup python /home/pi/DashComputer/computer/temperature.py > /home/pi/CarComputer/computer/temperature.log 2>&1`
-
+`@reboot /bin/sleep 20; nohup python /home/pi/DashComputer/computer/temperature.py > /home/pi/DashComputer/computer/temperature.log 2>&1`
 
 ### IN PROGRESS NOTES
 
