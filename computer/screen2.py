@@ -10,11 +10,8 @@ import time, json, string, cgi, subprocess, json
 import includes.data as data
 import includes.display as display
 import includes.settings as settings
-import info.CurrentReadings as CurrentReadings
 import info.WeatherDetails as WeatherDetails
 import info.GPSInfo as GPSInfo
-import info.CurrentReadings as CurrentReadings
-import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
 import info.Notification as Notification
 import info.Wifi as Wifi

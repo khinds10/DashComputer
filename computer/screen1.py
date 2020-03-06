@@ -9,13 +9,8 @@ import time, json, string, cgi, subprocess, json
 import includes.data as data
 import includes.display as display
 import includes.settings as settings
-import info.CurrentReadings as CurrentReadings
-import info.WeatherDetails as WeatherDetails
-import info.GPSInfo as GPSInfo
-import info.CurrentReadings as CurrentReadings
 import info.LocaleDetails as LocaleDetails
 import info.Statistics as Statistics
-import info.Notification as Notification
 import info.RPi as RPi
 import info.Idle as Idle
 
@@ -34,7 +29,7 @@ def showTime():
 
 def getLocale():
     localeInfo = LocaleDetails.LocaleDetails('address.data')
-    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city, getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city[0:20], getframeinfo(currentframe()))
 
 def getTripStats():
     """show driving / idle status for current trip you're in"""
@@ -44,10 +39,18 @@ def getTripStats():
     if idleInfo.isIdle == "yes":
         drivingMessage = 'Idle: '
     digoleDisplay.printByFontColorPosition(18, 255, 35, 23, drivingMessage + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 98, data.calculateInTrafficPercent(str(statisticsInfo.inTrafficTimes[0]), str(statisticsInfo.drivingTimes[0])) + '%', getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
-    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: XhXm', getframeinfo(currentframe()))
+
+    # only show in-traffic % / miles travelled if you're currently driving, also switch out the last and idle records to show the correct most recent driving or idling amount
+    if idleInfo.isIdle == "no":
+        digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 255, 35, 98, data.calculateInTrafficPercent(str(statisticsInfo.inTrafficTimes[0]), str(statisticsInfo.drivingTimes[0])) + '%', getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: ' + str(statisticsInfo.drivingTimes[2]), getframeinfo(currentframe()))
+    else:
+        digoleDisplay.printByFontColorPosition(18, 255, 35, 98, " ", getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 255, 35, 68, " ", getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[2]), getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
 
 def getRPIStats():
     RPiInfo = RPi.RPi('rpi.data')

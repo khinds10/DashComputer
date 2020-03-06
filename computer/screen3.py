@@ -11,10 +11,7 @@ import includes.display as display
 import includes.settings as settings
 import info.CurrentReadings as CurrentReadings
 import info.WeatherDetails as WeatherDetails
-import info.GPSInfo as GPSInfo
 import info.CurrentReadings as CurrentReadings
-import info.LocaleDetails as LocaleDetails
-import info.Statistics as Statistics
 
 # setup the display and initial icons
 digoleDisplay = display.Display('right', settings.digoleDisplayDriverLocation)

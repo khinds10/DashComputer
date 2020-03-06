@@ -12,7 +12,7 @@ wifi = Wifi.Wifi('wifi.data')
 while True:
     try:
         try:
-            urllib2.urlopen('http://www.kevinhinds.net', timeout=1)
+            urllib2.urlopen('http://www.hindshouse.net', timeout=1)
             wifi.isConnected = 'yes'
             isInternetConnected = True
         except urllib2.URLError as err:
