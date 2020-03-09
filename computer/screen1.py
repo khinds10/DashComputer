@@ -29,8 +29,13 @@ def showTime():
 
 def getLocale():
     localeInfo = LocaleDetails.LocaleDetails('address.data')
-    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.city[0:20], getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 222, 120, 230, localeInfo.county[0:20], getframeinfo(currentframe()))
 
+def showZeros(tripValue):
+    if tripValue == "":
+        return "0m"
+    return tripValue
+    
 def getTripStats():
     """show driving / idle status for current trip you're in"""
     statisticsInfo = Statistics.Statistics('stats.data')
@@ -38,19 +43,21 @@ def getTripStats():
     drivingMessage = 'Trip: '
     if idleInfo.isIdle == "yes":
         drivingMessage = 'Idle: '
-    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, drivingMessage + str(statisticsInfo.drivingTimes[0]), getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 255, 35, 23, drivingMessage + showZeros(str(statisticsInfo.drivingTimes[0])), getframeinfo(currentframe()))
 
     # only show in-traffic % / miles travelled if you're currently driving, also switch out the last and idle records to show the correct most recent driving or idling amount
     if idleInfo.isIdle == "no":
         digoleDisplay.printByFontColorPosition(18, 255, 35, 68, str(statisticsInfo.milesTravelled[0]) + ' mi', getframeinfo(currentframe()))
         digoleDisplay.printByFontColorPosition(18, 255, 35, 98, data.calculateInTrafficPercent(str(statisticsInfo.inTrafficTimes[0]), str(statisticsInfo.drivingTimes[0])) + '%', getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: ' + str(statisticsInfo.drivingTimes[2]), getframeinfo(currentframe()))
-    else:
-        digoleDisplay.printByFontColorPosition(18, 255, 35, 98, " ", getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 255, 35, 68, " ", getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + str(statisticsInfo.drivingTimes[2]), getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: ' + str(statisticsInfo.drivingTimes[1]), getframeinfo(currentframe()))
+
+    # show the last idle, last trip and current idle or trip time depending on if car is on or off
+    drivingTimesOne = showZeros(str(statisticsInfo.drivingTimes[1]))
+    drivingTimesTwo = showZeros(str(statisticsInfo.drivingTimes[2]))
+    if idleInfo.isIdle == "no":
+        drivingTimesOne = showZeros(str(statisticsInfo.drivingTimes[2]))
+        drivingTimesTwo = showZeros(str(statisticsInfo.drivingTimes[1]))
+    digoleDisplay.printByFontColorPosition(18, 222, 200, 23, 'Last: ' + drivingTimesOne, getframeinfo(currentframe()))
+    digoleDisplay.printByFontColorPosition(18, 254, 200, 55, 'Idle: ' + drivingTimesTwo, getframeinfo(currentframe()))
 
 def getRPIStats():
     RPiInfo = RPi.RPi('rpi.data')

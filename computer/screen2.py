@@ -53,6 +53,7 @@ showMessageWait = 0
 messageToggled = False
 
 while True:
+
     # every 10 seconds see if the message has changed
     try:        
         messageCheckedWait = messageCheckedWait + 1
@@ -76,19 +77,27 @@ while True:
         idleInfo = Idle.Idle('idle.data')
         
         # driving stats
-        statisticsInfo = Statistics.Statistics('stats.data')
-        digoleDisplay.printByFontColorPosition(18, 255, 180, 115, 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph', getframeinfo(currentframe()))
-        digoleDisplay.printByFontColorPosition(18, 255, 210, 140, '[' + str(statisticsInfo.milesTravelled[0]) + ' miles]', getframeinfo(currentframe()))
+        statisticsInfo = Statistics.Statistics('stats.data') 
         
+        # show the current or most recent miles driven and avg speed
+        averageMPH = 'Avg. ' + str(statisticsInfo.averageSpeeds[0]) + ' mph'
+        milesDriven = '[' + str(statisticsInfo.milesTravelled[0]) + ' miles]'
+        if idleInfo.isIdle == "yes":
+            averageMPH = 'Avg. ' + str(statisticsInfo.averageSpeeds[1]) + ' mph'
+            milesDriven = '[' + str(statisticsInfo.milesTravelled[1]) + ' miles]'
+        digoleDisplay.printByFontColorPosition(18, 255, 180, 115, averageMPH, getframeinfo(currentframe()))
+        digoleDisplay.printByFontColorPosition(18, 255, 210, 140, milesDriven, getframeinfo(currentframe()))
+               
         # driving info
         gpsInfo = GPSInfo.GPSInfo('gps.data')
         digoleDisplay.setColor(255)  
         digoleDisplay.printByFontColorPosition(18, 255, 10, 220, 'Alt. ' + str(int(gpsInfo.altitude)) + ' ft', getframeinfo(currentframe()))
         digoleDisplay.printByFontColorPosition(18, 255, 10, 195, 'Climb ' + str(int(gpsInfo.altitude)) + '', getframeinfo(currentframe()))
+        
+        drivingMessage = str(int(gpsInfo.speed)) + ' mph'
         if idleInfo.isIdle == "yes":
-            digoleDisplay.printByFontColorPosition(18, 255, 180, 85, 'Idle', getframeinfo(currentframe()))
-        else:
-            digoleDisplay.printByFontColorPosition(18, 255, 180, 85, str(int(gpsInfo.speed)) + ' mph', getframeinfo(currentframe()))
+            drivingMessage = 'Idle'
+        digoleDisplay.printByFontColorPosition(18, 255, 180, 85, drivingMessage, getframeinfo(currentframe()))
 
         # get weather details for headlights indicator
         weatherDetails = WeatherDetails.WeatherDetails('weather.data')
@@ -125,15 +134,19 @@ while True:
         else:
             digoleDisplay.setColor(0)
             digoleDisplay.drawBox(234, 20, 20, 20)
-            
-        if weatherDetails.useHeadlights:
+        
+        # show headlights or not icon and message
+        useHeadlightsMsg = "            "
+        if bool(weatherDetails.useHeadlights):
+            useHeadlightsMsg = "Headlights"
+        digoleDisplay.printByFontColorPosition(10, 11, 190, 190, useHeadlightsMsg, getframeinfo(currentframe()))
+        if bool(weatherDetails.useHeadlights):
             digoleDisplay.displayIcon('beam', 230, 205)
             digoleDisplay.setColor(11)
-            digoleDisplay.printByFontColorPosition(10, 11, 190, 190, 'Headlights', getframeinfo(currentframe()))
         else:
             digoleDisplay.setColor(0)
             digoleDisplay.drawBox(230, 200, 24, 25)
-            digoleDisplay.printByFontColorPosition(10, 0, 190, 190, 'Headlights', getframeinfo(currentframe()))
+            
     except (Exception):
         pass
     time.sleep(2)

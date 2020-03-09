@@ -20,7 +20,7 @@ while True:
         drivingStatistics.averageAltitude  = map(data.convertToString, map(data.convertToInt, postgres.getRecentTripAltitudes()))
         drivingStatistics.milesTravelled = map(data.convertToString, [data.convertToInt(recentTripSpeeds[0]/60/60 * recentTripTimes[0]), data.convertToInt(recentTripSpeeds[1]/60/60 * recentTripTimes[1]), data.convertToInt(recentTripSpeeds[2]/60/60 * recentTripTimes[2])])	       
         drivingStatistics.saveData()
-        time.sleep(30)
+        time.sleep(5)
 
     except (Exception):
     
